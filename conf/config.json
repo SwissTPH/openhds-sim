@@ -1,0 +1,28 @@
+{
+    "general": {
+        "clean_db_on_init": true,
+        "clean_db_between_rounds": true
+    },
+    "open_hds_server": {
+        "db_host": "data-management.local",
+        "db_name": "openhds",
+        "db_user": "data",
+        "db_password": "data"
+    },
+    "odk_server": {
+        "aggregate_url": "http://data-management.local:8080/ODKAggregate/submission",
+        "db_host": "data-management.local",
+        "db_name": "odk_prod",
+        "db_user": "data",
+        "db_password": "data",
+        "forms": [
+        "DEATH_REGISTRATION_CORE", "IN_MIGRATION_CORE", "LOCATION_REGISTRATION_CORE", "MEMBERSHIP_CORE",
+        "OUT_MIGRATION_REGISTRATION_CORE", "PREGNANCY_OBSERVATION_CORE", "PREGNANCY_OUTCOME_CORE",
+        "PREGNANCY_OUTCOME_OUTCOMES", "RELATIONSHIP_CORE", "SOCIAL_GROUP_REGISTRATION_CORE", "VISIT_REGISTRATION_CORE"
+    ]
+    },
+    "mirth": {
+        "last_processed_table": "RELATIONSHIP_CORE",
+        "processed_by_mirth": "PROCESSED_BY_MIRTH"
+    }
+}
