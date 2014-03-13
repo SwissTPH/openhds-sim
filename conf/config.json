@@ -7,7 +7,10 @@
         "db_host": "data-management.local",
         "db_name": "openhds",
         "db_user": "data",
-        "db_password": "data"
+        "db_password": "data",
+        "tables_to_truncate": ["death", "demrates", "extension", "inmigration", "location", "membership", "neonatalvpm",
+        "note", "outcome", "outmigration", "postneonatalvpm", "pregnancyobservation", "pregnancyoutcome",
+            "pregnancyoutcome_outcome", "relationship", "residency", "round", "socialgroup", "vaccination", "visit"]
     },
     "odk_server": {
         "aggregate_url": "http://data-management.local:8080/ODKAggregate/submission",

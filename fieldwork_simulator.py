@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Test form submission"""
+"""HDSS fieldwork simulation, using openHDS"""
 
 __email__ = "nicolas.maire@unibas.ch"
 __status__ = "Alpha"
@@ -109,12 +109,8 @@ def clean_db():
     cursor.execute("DELETE FROM locationhierarchy where uuid != 'hierarchy_root'")
     cursor.execute("DELETE FROM fieldworker where uuid != 'UnknownFieldWorker'")
     cursor.execute("DELETE FROM individual where uuid != 'Unknown Individual'")
-    cursor.execute("TRUNCATE round")
-    cursor.execute("TRUNCATE socialgroup")
-    cursor.execute("TRUNCATE location")
-    cursor.execute("TRUNCATE visit")
-    cursor.execute("TRUNCATE membership")
-    cursor.execute("TRUNCATE relationship")
+    for table in config['open_hds_server']['tables_to_truncate']:
+        cursor.execute("TRUNCATE " + table)
     cursor.execute("SET FOREIGN_KEY_CHECKS=1")
     cursor.close()
     open_hds_connection.commit()
@@ -356,6 +352,7 @@ def simulate_inter_round():
 if __name__ == "__main__":
     init()
     for round in site['round']:
+        print(round)
         simulate_round(round)
         simulate_inter_round()
     open_hds_connection.close()
