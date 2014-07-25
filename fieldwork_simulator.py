@@ -320,6 +320,7 @@ def visit_social_group(social_group, round_number, date_of_visit):
             submission.submit_out_migration_registration(individual['ind_id'], field_worker['ext_id'], visit_id,
                                                          str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE', 'REC',
                                                          create_end_time(date_of_visit), aggregate_url)
+            individual['status'] == 'outside_hdss'
 
 
 def simulate_update(round):
