@@ -192,10 +192,14 @@ def create_date_from_interval(start, end):
     return start_date + datetime.timedelta(days=random.randint(0, (end_date - start_date).days))
 
 
-def create_end_time(date_of_visit):
-    visit_datetime = datetime.datetime.combine(date_of_visit, datetime.datetime.min.time())
-    visit_datetime = visit_datetime + datetime.timedelta(seconds=random.randint(0, 86399))
-    return visit_datetime.strftime('%Y-%m-%dT%H:%M:%S.000+03')
+def create_start_end_time(date_of_visit):
+    start_datetime = datetime.datetime.combine(date_of_visit, datetime.datetime.min.time())
+    #TODO:  move hard coded values for times in seconds to config
+    #start visit between 8am and 4pm
+    start_datetime = start_datetime + datetime.timedelta(seconds=random.randint(0, 21600)+21599)
+    #end visit within 60 minutes
+    end_datetime = start_datetime + datetime.timedelta(seconds=random.randint(1, 3600))
+    return start_datetime.strftime('%Y-%m-%dT%H:%M:%S.000+03'), end_datetime.strftime('%Y-%m-%dT%H:%M:%S.000+03')
 
 
 def create_fws(fieldworker):
@@ -231,15 +235,18 @@ def create_location_hierarchy(location_hierarchy):
 def create_social_group(social_group_size, round_number, date_of_visit):
     field_worker = random.choice(hdss['field_workers'])
     cursor = open_hds_connection.cursor()
-    sub_village = query_db_one(cursor, "SELECT extId FROM locationhierarchy "
+    #sample location on lowest level of location hierarchy
+    area = query_db_one(cursor, "SELECT extId FROM locationhierarchy "
                                        "WHERE level_uuid = 'hierarchyLevelId5' ORDER BY RAND() LIMIT 1")['extId']
     #for now assume one location per social group
     location_index = len(hdss['social_groups']) + 1
-    location_id = sub_village + str(location_index).zfill(6)
+    location_id = area + str(location_index).zfill(6)
     coordinates = sample_coordinates()
-    submission.submit_location_registration(sub_village, field_worker['ext_id'], location_id, 'Location name',
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_location_registration(start_time, area, field_worker['ext_id'], location_id, 'Location name',
                                             'Ten cell leader', 'RUR', coordinates,
-                                            create_end_time(date_of_visit), aggregate_url)
+                                            end_time, aggregate_url)
+    #TODO: visit id not needed in baseline?
     visit_id = location_id + round_number.zfill(3)
     ind_id = ''
     sg_id = location_id + '00'
@@ -247,44 +254,54 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     id_of_head = location_id + '1'.zfill(3)
     last_name = create_last_name()
     gender_of_head = sample_gender()
-    submission.submit_baseline_individual(location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK', 'UNK',
-                                          create_first_name(), create_first_name(), last_name, gender_of_head,
+    start_time, end_time = create_start_end_time(date_of_visit)
+    #TODO: replace call to inmigration with baseline form
+    submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK',
+                                          'UNK', create_first_name(), create_first_name(), last_name, gender_of_head,
                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
-                                          '0', str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE',
-                                          create_end_time(date_of_visit), aggregate_url)
+                                          '1', str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE', 'Other', '1',
+                                          end_time, aggregate_url)
     #create a social group
-    submission.submit_social_group_registration(sg_id, id_of_head, field_worker['ext_id'], last_name, "FAM",
-                                                create_end_time(date_of_visit), aggregate_url)
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_social_group_registration(start_time, sg_id, id_of_head, field_worker['ext_id'], last_name, "FAM",
+                                                end_time, aggregate_url)
     social_group = {'sg_id': sg_id, 'individuals': [], 'locations': []}
     social_group['locations'].append({'location_id': location_id, 'coordinates': coordinates})
     social_group['individuals'].append({'ind_id': id_of_head, 'gender': gender_of_head, 'last_seen': date_of_visit,
                                         'status': 'present'})
     #and make the head a member
-    submission.submit_membership(id_of_head, sg_id, field_worker['ext_id'], '1', str(date_of_visit),
-                                 create_end_time(date_of_visit), aggregate_url)
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_membership(start_time, id_of_head, sg_id, field_worker['ext_id'], '1', str(date_of_visit),
+                                 end_time, aggregate_url)
     for i in range(2, social_group_size):
         ind_id = location_id + str(i).zfill(3)
         gender = sample_gender()
         age = sample_age()
-        submission.submit_baseline_individual(location_id, visit_id, field_worker['ext_id'], ind_id, 'UNK', 'UNK',
-                                              create_first_name(), create_first_name(), create_last_name(), gender,
-                                              str(create_date(age, date_of_visit)), '0',
-                                              str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE',
-                                              create_end_time(date_of_visit), aggregate_url)
+        start_time, end_time = create_start_end_time(date_of_visit)
+        #TODO: use baseline form instead of inmigration
+        submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id, 'UNK',
+                                              'UNK', create_first_name(), create_first_name(), create_last_name(),
+                                              gender, str(create_date(age, date_of_visit)), '1',
+                                              str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE', 'Other', '1',
+                                              end_time, aggregate_url)
         #create memberships here, 2-9 for relationship
-        submission.submit_membership(ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),
-                                     str(date_of_visit), create_end_time(date_of_visit), aggregate_url)
+        start_time, end_time = create_start_end_time(date_of_visit)
+        submission.submit_membership(start_time, ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),
+                                     str(date_of_visit), end_time, aggregate_url)
         social_group['individuals'].append({'ind_id': ind_id, 'gender': gender, 'last_seen': date_of_visit,
                                             'status': 'present'})
     #then another loop for relationship, use code 2 for marriages.
     #submission.submit_relationship()
     #TODO: for now, just take individual 2 and marry it to the household head (if opposite sexes and old enough)
         if i == 2 and gender != gender_of_head and age > min_age_marriage:
-            submission.submit_relationship(id_of_head, ind_id, field_worker['ext_id'], '2', str(date_of_visit),
-                                           create_end_time(date_of_visit), aggregate_url)
-    submission.submit_visit_registration(visit_id, field_worker['ext_id'], location_id, round_number,
+            start_time, end_time = create_start_end_time(date_of_visit)
+            submission.submit_relationship(start_time, id_of_head, ind_id, field_worker['ext_id'], '2',
+                                           str(date_of_visit),end_time, aggregate_url)
+    #TODO: visit form only for update rounds
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_visit_registration(start_time, visit_id, field_worker['ext_id'], location_id, round_number,
                                          str(date_of_visit), ind_id, '1', '0', coordinates,
-                                         create_end_time(date_of_visit), aggregate_url)
+                                         end_time, aggregate_url)
     hdss['social_groups'].append(social_group)
 
 
@@ -305,21 +322,24 @@ def visit_social_group(social_group, round_number, date_of_visit):
     #TODO: only one location per social group for now
     location_id = social_group['locations'][0]['location_id']
     visit_id = location_id + round_number.zfill(3)
-    submission.submit_visit_registration(visit_id, field_worker['ext_id'], location_id, round_number,
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_visit_registration(start_time, visit_id, field_worker['ext_id'], location_id, round_number,
                                          str(date_of_visit), social_group['individuals'][0]['ind_id'], '1', '0',
                                          social_group['locations'][0]['coordinates'],
-                                         create_end_time(date_of_visit), aggregate_url)
+                                         end_time, aggregate_url)
     for individual in social_group['individuals']:
         #TODO: here decide for each individual if/which event occurred. For now just test some submissions.
-        if individual['status'] == 'present' and random.random() < 0.5:
-            submission.submit_death_registration(individual['ind_id'], field_worker['ext_id'], individual['gender'],
-                                                 '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH', str(date_of_visit),
-                                                 'OTHER', 'OTHERPLACE', create_end_time(date_of_visit), aggregate_url)
+        if individual['status'] == 'present' and random.random() < 0.2:
+            start_time, end_time = create_start_end_time(date_of_visit)
+            submission.submit_death_registration(start_time, individual['ind_id'], field_worker['ext_id'],
+                                                 individual['gender'], '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
+                                                 str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
             individual['status'] == 'dead'
         if individual['status'] == 'present' and random.random() < 0.5:
-            submission.submit_out_migration_registration(individual['ind_id'], field_worker['ext_id'], visit_id,
-                                                         str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE', 'REC',
-                                                         create_end_time(date_of_visit), aggregate_url)
+            start_time, end_time = create_start_end_time(date_of_visit)
+            submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
+                                                         visit_id, str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
+                                                         'REC', end_time, aggregate_url)
             individual['status'] == 'outside_hdss'
 
 
@@ -347,7 +367,8 @@ def simulate_inter_round():
         time.sleep(1)
         cursor = odk_connection.cursor()
         number_unprocessed = query_db_one(cursor, "SELECT COUNT(*) AS count FROM {last_processed_table} "
-                                                  "WHERE {processed_by_mirth} IS NULL".format(**config['mirth']))
+                                                  "WHERE {processed_by_mirth} = 0".format(**config['mirth']))
+        print("waiting for mirth to process submissions, still: " + str(number_unprocessed['count']))
         if number_unprocessed['count'] == 0:
             break
 
