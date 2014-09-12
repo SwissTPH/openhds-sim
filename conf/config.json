@@ -9,7 +9,7 @@
         "db_user": "data",
         "db_password": "data",
         "tables_to_truncate": ["death", "demrates", "extension", "inmigration", "location", "membership", "neonatalvpm",
-        "note", "outcome", "outmigration", "postneonatalvpm", "pregnancyobservation", "pregnancyoutcome",
+            "note", "outcome", "outmigration", "postneonatalvpm", "pregnancyobservation", "pregnancyoutcome",
             "pregnancyoutcome_outcome", "relationship", "residency", "round", "socialgroup", "vaccination", "visit"]
     },
     "odk_server": {
@@ -19,13 +19,11 @@
         "db_user": "data",
         "db_password": "data",
         "forms": [
-        "DEATH_REGISTRATION_CORE", "IN_MIGRATION_CORE", "LOCATION_REGISTRATION_CORE", "MEMBERSHIP_CORE",
-        "OUT_MIGRATION_REGISTRATION_CORE", "PREGNANCY_OBSERVATION_CORE", "PREGNANCY_OUTCOME_CORE",
-        "PREGNANCY_OUTCOME_OUTCOMES", "RELATIONSHIP_CORE", "SOCIAL_GROUP_REGISTRATION_CORE", "VISIT_REGISTRATION_CORE"
-    ]
-    },
-    "mirth": {
-        "last_processed_table": "RELATIONSHIP_CORE",
-        "processed_by_mirth": "PROCESSED_BY_MIRTH"
+            "DEATH_REGISTRATION_CORE", "IN_MIGRATION_CORE", "LOCATION_REGISTRATION_CORE", "MEMBERSHIP_CORE",
+            "OUT_MIGRATION_REGISTRATION_CORE", "PREGNANCY_OBSERVATION_CORE", "PREGNANCY_OUTCOME_CORE",
+            "RELATIONSHIP_CORE", "SOCIAL_GROUP_REGISTRATION_CORE", "VISIT_REGISTRATION_CORE"
+        ],
+        "processed_by_mirth_flag": "PROCESSED_BY_MIRTH"
+
     }
 }

@@ -363,14 +363,22 @@ def simulate_round(round):
 
 
 def simulate_inter_round():
-    while True:
-        time.sleep(1)
+    #wait for mirth to finish transferring data to openhds
+    waiting_for_mirth = True
+    while waiting_for_mirth:
         cursor = odk_connection.cursor()
-        number_unprocessed = query_db_one(cursor, "SELECT COUNT(*) AS count FROM {last_processed_table} "
-                                                  "WHERE {processed_by_mirth} = 0".format(**config['mirth']))
-        print("waiting for mirth to process submissions, still: " + str(number_unprocessed['count']))
-        if number_unprocessed['count'] == 0:
-            break
+        number_unprocessed = 0
+        processed_flag = config['odk_server']['processed_by_mirth_flag']
+        print(processed_flag)
+        for odk_form in config['odk_server']['forms']:
+            number_unprocessed += query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
+                                               .format(odk_form=odk_form,
+                                                       processed=processed_flag))['count']
+        if number_unprocessed == 0:
+            waiting_for_mirth = False
+        else:
+            print("waiting for mirth to process submissions, still: " + str(number_unprocessed))
+            time.sleep(1)
 
 
 if __name__ == "__main__":
