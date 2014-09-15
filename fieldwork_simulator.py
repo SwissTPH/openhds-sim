@@ -246,7 +246,6 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     submission.submit_location_registration(start_time, area, field_worker['ext_id'], location_id, 'Location name',
                                             'Ten cell leader', 'RUR', coordinates,
                                             end_time, aggregate_url)
-    #TODO: visit id not needed in baseline?
     visit_id = location_id + round_number.zfill(3)
     ind_id = ''
     sg_id = location_id + '00'
@@ -255,12 +254,10 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     last_name = create_last_name()
     gender_of_head = sample_gender()
     start_time, end_time = create_start_end_time(date_of_visit)
-    #TODO: replace call to inmigration with baseline form
     submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK',
                                           'UNK', create_first_name(), create_first_name(), last_name, gender_of_head,
                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
-                                          '1', str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE', 'Other', '1',
-                                          end_time, aggregate_url)
+                                          '1', str(date_of_visit), end_time, aggregate_url)
     #create a social group
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_social_group_registration(start_time, sg_id, id_of_head, field_worker['ext_id'], last_name, "FAM",
@@ -278,12 +275,11 @@ def create_social_group(social_group_size, round_number, date_of_visit):
         gender = sample_gender()
         age = sample_age()
         start_time, end_time = create_start_end_time(date_of_visit)
-        #TODO: use baseline form instead of inmigration
-        submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id, 'UNK',
-                                              'UNK', create_first_name(), create_first_name(), create_last_name(),
-                                              gender, str(create_date(age, date_of_visit)), '1',
-                                              str(date_of_visit), 'ORIGIN', 'REASON', 'MARITAL_CHANGE', 'Other', '1',
-                                              end_time, aggregate_url)
+        submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id,
+                                              'UNK', 'UNK', create_first_name(), create_first_name(),
+                                              last_name, gender_of_head,
+                                              str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                              '1', str(date_of_visit), end_time, aggregate_url)
         #create memberships here, 2-9 for relationship
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_membership(start_time, ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),
@@ -294,9 +290,11 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     #submission.submit_relationship()
     #TODO: for now, just take individual 2 and marry it to the household head (if opposite sexes and old enough)
         if i == 2 and gender != gender_of_head and age > min_age_marriage:
+            print(gender)
+            print(gender_of_head)
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_relationship(start_time, id_of_head, ind_id, field_worker['ext_id'], '2',
-                                           str(date_of_visit),end_time, aggregate_url)
+                                           str(date_of_visit), end_time, aggregate_url)
     #TODO: visit form only for update rounds
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_visit_registration(start_time, visit_id, field_worker['ext_id'], location_id, round_number,

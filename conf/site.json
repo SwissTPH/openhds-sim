@@ -6,7 +6,7 @@
             ["-0.412", "34.145"],
             ["-0.39", "34.164"]],
         "start_date": "2009-05-30",
-        "pop_size_baseline": 1000,
+        "pop_size_baseline": 100,
         "birth_rate": 0.11,
         "death_rate": 0.035,
         "immigration_rate": 0.055,
@@ -76,19 +76,19 @@
         {
             "endDate": "2011-06-14",
             "remarks": "Baseline",
-            "roundNumber": 1,
+            "roundNumber": 0,
             "startDate": "2011-03-15"
         },
         {
             "endDate": "2012-06-14",
             "remarks": "First update",
-            "roundNumber": 2,
+            "roundNumber": 1,
             "startDate": "2012-03-15"
         },
         {
             "endDate": "2014-02-18",
             "remarks": "Second update",
-            "roundNumber": 3,
+            "roundNumber": 2,
             "startDate": "2013-12-15"
         }
     ]

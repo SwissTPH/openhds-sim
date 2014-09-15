@@ -59,20 +59,17 @@ def submit_from_dict(form_dict, aggregate_url):
 
 def submit_baseline_individual(start, location_id, visit_id, fieldworker_id, individual_id, mother_id, father_id,
                                first_name, middle_name, last_name, gender, date_of_birth, partial_date,
-                               date_of_migration, origin, reason, marital_change, moved_from, short_or_long_stay,
-                               end, aggregate_url):
-    #TODO: use the baseline form here
-    form_dict = {"id": "in_migration",
-                 "fields": [["start", start], ["migrationType", "EXTERNAL_INMIGRATION"], ["locationId", location_id],
+                               date_of_visit, end, aggregate_url):
+    form_dict = {"id": "baseline",
+                 "fields": [["start", start], ["migrationType", "BASELINE"], ["locationId", location_id],
                             ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
                                                 ["fatherId", father_id],
                                                 ["firstName", first_name], ["middleName", middle_name],
                                                 ["lastName", last_name], ["gender", gender],
                                                 ["dateOfBirth", date_of_birth], ["partialDate", partial_date]]],
-                            ["dateOfMigration", date_of_migration], ["origin", origin], ["reason", reason],
-                            ["maritalChange", marital_change], ["movedfrom", moved_from],
-                            ["shortorlongstay", short_or_long_stay], ["end", end]]}
+                            ["dateOfMigration", date_of_visit], ["visitDate", date_of_visit],
+                            ["majo4mo", "yes"], ["spelasni", "yes"], ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
