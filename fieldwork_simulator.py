@@ -295,11 +295,6 @@ def create_social_group(social_group_size, round_number, date_of_visit):
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_relationship(start_time, id_of_head, ind_id, field_worker['ext_id'], '2',
                                            str(date_of_visit), end_time, aggregate_url)
-    #TODO: visit form only for update rounds
-    start_time, end_time = create_start_end_time(date_of_visit)
-    submission.submit_visit_registration(start_time, visit_id, field_worker['ext_id'], location_id, round_number,
-                                         str(date_of_visit), ind_id, '1', '0', coordinates,
-                                         end_time, aggregate_url)
     hdss['social_groups'].append(social_group)
 
 
