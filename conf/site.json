@@ -6,7 +6,7 @@
             ["-0.412", "34.145"],
             ["-0.39", "34.164"]],
         "start_date": "2009-05-30",
-        "pop_size_baseline": 100,
+        "pop_size_baseline": 200,
         "birth_rate": 0.11,
         "death_rate": 0.035,
         "immigration_rate": 0.055,
@@ -86,7 +86,7 @@
             "startDate": "2012-03-15"
         },
         {
-            "endDate": "2014-02-18",
+            "endDate": "2014-09-17",
             "remarks": "Second update",
             "roundNumber": 2,
             "startDate": "2013-12-15"

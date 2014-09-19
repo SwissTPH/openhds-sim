@@ -22,7 +22,8 @@ site = None
 aggregate_url = ''
 open_hds_connection = None
 odk_connection = None
-first_names = []
+m_first_names = []
+f_first_names = []
 last_names = []
 
 area_polygon = None
@@ -57,7 +58,7 @@ def create_uuid():
 
 def init():
     """Initialization"""
-    global config, first_names, last_names, aggregate_url, open_hds_connection, odk_connection
+    global config, m_first_names, f_first_names, last_names, aggregate_url, open_hds_connection, odk_connection
     global area_polygon, area_extent, locations_per_social_group, individuals_per_social_group
     global pop_size_baseline, site, min_age_head_of_social_group, proportion_females, birth_rate, death_rate
     global min_age_marriage
@@ -80,6 +81,12 @@ def init():
     aggregate_url = config['odk_server']['aggregate_url']
     with open(os.path.join(conf_dir, 'firstnames.csv')) as f:
         first_names = list(f.read().splitlines(False))
+    for first_name in first_names:
+        fn = first_name.split(';')
+        if fn[0] == 'M':
+            m_first_names.append(fn[1])
+        else:
+            f_first_names.append(fn[1])
     with open(os.path.join(conf_dir, 'lastnames.csv')) as f:
         last_names = list(f.read().splitlines(False))
     area_outline_vertices = []
@@ -138,8 +145,11 @@ def sample_coordinates(constraint=None):
             return str(lat) + ' ' + str(lon) + ' 0 0'
 
 
-def create_first_name():
-    return random.choice(first_names)
+def create_first_name(sex):
+    if sex == 'M':
+        return random.choice(m_first_names)
+    else:
+        return random.choice(f_first_names)
 
 
 def create_last_name():
@@ -210,7 +220,7 @@ def create_fws(fieldworker):
                    "('{uu_id}','data', 'Data', 'Data', false)".format(uu_id=create_uuid()))
     number = fieldworker['number']
     for i in range(1, number + 1):
-        first_name = create_first_name()
+        first_name = create_first_name(sample_gender())
         last_name = create_last_name()
         #TODO: i is not what should be used according to the naming convention
         ext_id = 'FW' + first_name[0] + last_name[0] + str(i)
@@ -255,7 +265,8 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     gender_of_head = sample_gender()
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK',
-                                          'UNK', create_first_name(), create_first_name(), last_name, gender_of_head,
+                                          'UNK', create_first_name(gender_of_head), create_first_name(gender_of_head),
+                                          last_name, gender_of_head,
                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
                                           '1', str(date_of_visit), end_time, aggregate_url)
     #create a social group
@@ -276,8 +287,8 @@ def create_social_group(social_group_size, round_number, date_of_visit):
         age = sample_age()
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id,
-                                              'UNK', 'UNK', create_first_name(), create_first_name(),
-                                              last_name, gender_of_head,
+                                              'UNK', 'UNK', create_first_name(gender), create_first_name(gender),
+                                              last_name, gender,
                                               str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
                                               '1', str(date_of_visit), end_time, aggregate_url)
         #create memberships here, 2-9 for relationship
@@ -290,8 +301,6 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     #submission.submit_relationship()
     #TODO: for now, just take individual 2 and marry it to the household head (if opposite sexes and old enough)
         if i == 2 and gender != gender_of_head and age > min_age_marriage:
-            print(gender)
-            print(gender_of_head)
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_relationship(start_time, id_of_head, ind_id, field_worker['ext_id'], '2',
                                            str(date_of_visit), end_time, aggregate_url)
