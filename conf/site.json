@@ -5,8 +5,8 @@
             ["-0.41", "34.193"],
             ["-0.412", "34.145"],
             ["-0.39", "34.164"]],
-        "start_date": "2009-05-30",
-        "pop_size_baseline": 200,
+        "start_date": "2012-05-30",
+        "pop_size_baseline": 2000,
         "birth_rate": 0.11,
         "death_rate": 0.035,
         "immigration_rate": 0.055,
@@ -74,22 +74,22 @@
     },
     "round": [
         {
-            "endDate": "2011-06-14",
+            "endDate": "2013-06-14",
             "remarks": "Baseline",
             "roundNumber": 0,
-            "startDate": "2011-03-15"
+            "startDate": "2013-03-15"
         },
         {
-            "endDate": "2012-06-14",
+            "endDate": "2013-09-14",
             "remarks": "First update",
             "roundNumber": 1,
-            "startDate": "2012-03-15"
+            "startDate": "2013-06-15"
         },
         {
-            "endDate": "2014-09-17",
+            "endDate": "2014-10-08",
             "remarks": "Second update",
             "roundNumber": 2,
-            "startDate": "2013-12-15"
+            "startDate": "2014-06-15"
         }
     ]
 }

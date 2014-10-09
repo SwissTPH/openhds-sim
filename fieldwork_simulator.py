@@ -371,7 +371,6 @@ def simulate_inter_round():
         cursor = odk_connection.cursor()
         number_unprocessed = 0
         processed_flag = config['odk_server']['processed_by_mirth_flag']
-        print(processed_flag)
         for odk_form in config['odk_server']['forms']:
             number_unprocessed += query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
                                                .format(odk_form=odk_form,
@@ -380,7 +379,7 @@ def simulate_inter_round():
             waiting_for_mirth = False
         else:
             print("waiting for mirth to process submissions, still: " + str(number_unprocessed))
-            time.sleep(1)
+            time.sleep(5)
 
 
 if __name__ == "__main__":
