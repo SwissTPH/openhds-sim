@@ -1,17 +1,18 @@
 {
     "general": {
         "area_polygon":
-            [["-0.39", "34.193"],
-            ["-0.41", "34.193"],
-            ["-0.412", "34.145"],
-            ["-0.39", "34.164"]],
+            [["47.56", "7.55"],
+            ["47.56", "7.64"],
+            ["47.53", "7.64"],
+            ["47.53", "7.55"]],
         "start_date": "2012-05-30",
-        "pop_size_baseline": 2000,
+        "end_date": "2012-05-30",
+        "pop_size_baseline": 50,
         "birth_rate": 0.11,
         "death_rate": 0.035,
         "immigration_rate": 0.055,
         "emigration_rate": 0.05,
-        "sex_ratio": 1.1
+        "sex_ratio": 0.9
     },
     "relationship": {
       "min_age_marriage": 12
@@ -30,43 +31,57 @@
         "levels": [
             {
                 "uuid": "hierarchy1",
-                "extId": "TAN",
-                "name": "TANZANIA",
+                "extId": "SUI",
+                "name": "Switzerland",
                 "level_uuid": "hierarchyLevelId1",
                 "parent_uuid": "hierarchy_root"
             },
             {
                 "uuid": "hierarchy2",
-                "extId": "MOR",
-                "name": "MOROGORO",
+                "extId": "NWS",
+                "name": "NW",
                 "level_uuid": "hierarchyLevelId2",
                 "parent_uuid": "hierarchy1"
             },
             {
                 "uuid": "hierarchy3",
-                "extId": "IFD",
-                "name": "IFAKARA DISTRICT",
+                "extId": "BSL",
+                "name": "Basel",
                 "level_uuid": "hierarchyLevelId3",
                 "parent_uuid": "hierarchy2"
             },
             {
                 "uuid": "hierarchy4",
-                "extId": "IFV",
-                "name": "IFAKARA VILLAGE",
+                "extId": "BSS",
+                "name": "Basel-Stadt",
                 "level_uuid": "hierarchyLevelId4",
                 "parent_uuid": "hierarchy3"
             },
             {
                 "uuid": "hierarchy5_1",
-                "extId": "IFA",
-                "name": "IFAKARA",
+                "extId": "ISE",
+                "name": "Iselin",
                 "level_uuid": "hierarchyLevelId5",
                 "parent_uuid": "hierarchy4"
             },
             {
                 "uuid": "hierarchy5_2",
-                "extId": "KIU",
-                "name": "KIUNGANI",
+                "extId": "GTH",
+                "name": "Gotthelf",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            },
+            {
+                "uuid": "hierarchy5_3",
+                "extId": "BCL",
+                "name": "Bachletten",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            },
+            {
+                "uuid": "hierarchy5_4",
+                "extId": "GND",
+                "name": "Gundeldingen",
                 "level_uuid": "hierarchyLevelId5",
                 "parent_uuid": "hierarchy4"
             }
@@ -86,10 +101,10 @@
             "startDate": "2013-06-15"
         },
         {
-            "endDate": "2014-10-08",
+            "endDate": "2014-10-10",
             "remarks": "Second update",
             "roundNumber": 2,
-            "startDate": "2014-06-15"
+            "startDate": "2014-09-15"
         }
     ]
 }
