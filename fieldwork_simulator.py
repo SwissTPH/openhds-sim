@@ -386,7 +386,7 @@ def simulate_inter_round():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--site', help='Json file with site description', required=True)
-    parser.add_argument('-t', '--truncate', help='Json file with site description', action='store_true')
+    parser.add_argument('-t', '--truncate', help='Truncate all database tables?', action='store_true')
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
     init(args.truncate, args.site)
