@@ -14,6 +14,7 @@ import random
 import numpy as np
 import time
 from matplotlib.path import Path
+import argparse
 import submission
 
 conf_dir = 'conf'
@@ -56,7 +57,7 @@ def create_uuid():
     return str(uuid.uuid1()).replace('-', '')
 
 
-def init():
+def init(truncate_db, site_config):
     """Initialization"""
     global config, m_first_names, f_first_names, last_names, aggregate_url, open_hds_connection, odk_connection
     global area_polygon, area_extent, locations_per_social_group, individuals_per_social_group
@@ -64,7 +65,7 @@ def init():
     global min_age_marriage
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
-    with open(os.path.join(conf_dir, 'site.json')) as site_file:
+    with open(site_config) as site_file:
         site = json.load(site_file)
     open_hds_connection = MySQLdb.connect(host=config['open_hds_server']['db_host'],
                                           user=config['open_hds_server']['db_user'],
@@ -103,7 +104,7 @@ def init():
     birth_rate = site['general']['birth_rate']
     death_rate = site['general']['death_rate']
 
-    if config['general']['clean_db_on_init']:
+    if truncate_db:
         clean_db()
         create_fws(site['fieldworker'])
         create_location_hierarchy(site['locationhierarchy'])
@@ -383,7 +384,12 @@ def simulate_inter_round():
 
 
 if __name__ == "__main__":
-    init()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-s', '--site', help='Json file with site description', required=True)
+    parser.add_argument('-t', '--truncate', action='store_true')
+    parser.set_defaults(truncate=False)
+    args = parser.parse_args()
+    init(args.truncate, args.site)
     for round in site['round']:
         print(round)
         simulate_round(round)

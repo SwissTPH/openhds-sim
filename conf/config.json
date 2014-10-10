@@ -1,8 +1,4 @@
 {
-    "general": {
-        "clean_db_on_init": true,
-        "clean_db_between_rounds": true
-    },
     "open_hds_server": {
         "db_host": "data-management.local",
         "db_name": "openhds",
