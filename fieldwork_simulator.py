@@ -65,7 +65,7 @@ def init(truncate_db, site_config):
     global min_age_marriage
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
-    with open(site_config) as site_file:
+    with open(os.path.join(conf_dir, site_config)) as site_file:
         site = json.load(site_file)
     open_hds_connection = MySQLdb.connect(host=config['open_hds_server']['db_host'],
                                           user=config['open_hds_server']['db_user'],
@@ -385,7 +385,7 @@ def simulate_inter_round():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-s', '--site', help='Json file with site description', required=True)
+    parser.add_argument('-s', '--site', help='Json file with site description, located in conf dir', required=True)
     parser.add_argument('-t', '--truncate', help='Truncate all database tables?', action='store_true')
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
