@@ -25,7 +25,7 @@
     "fieldworker": {
         "number": 5,
         "visits_per_day": 10,
-        "accuracy": 1
+        "accuracy": 0.1
     },
     "locationhierarchy": {
         "levels": [

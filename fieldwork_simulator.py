@@ -16,6 +16,7 @@ import time
 from matplotlib.path import Path
 import argparse
 import submission
+import pickle
 
 conf_dir = 'conf'
 config = None
@@ -65,7 +66,7 @@ def init(truncate_db, site_config):
     global min_age_marriage
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
-    with open(os.path.join(conf_dir, site_config)) as site_file:
+    with open(os.path.join(conf_dir, site_config + '.json')) as site_file:
         site = json.load(site_file)
     open_hds_connection = MySQLdb.connect(host=config['open_hds_server']['db_host'],
                                           user=config['open_hds_server']['db_user'],
@@ -264,10 +265,11 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     id_of_head = location_id + '1'.zfill(3)
     last_name = create_last_name()
     gender_of_head = sample_gender()
+    first_name = create_first_name(gender_of_head)
+    middle_name = create_first_name(gender_of_head)
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK',
-                                          'UNK', create_first_name(gender_of_head), create_first_name(gender_of_head),
-                                          last_name, gender_of_head,
+                                          'UNK', first_name, middle_name, last_name, gender_of_head,
                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
                                           '1', str(date_of_visit), end_time, aggregate_url)
     #create a social group
@@ -285,13 +287,21 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     for i in range(2, social_group_size):
         ind_id = location_id + str(i).zfill(3)
         gender = sample_gender()
+        first_name = create_first_name(gender)
+        middle_name = create_first_name(gender)
         age = sample_age()
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id,
-                                              'UNK', 'UNK', create_first_name(gender), create_first_name(gender),
+                                              'UNK', 'UNK', first_name, middle_name,
                                               last_name, gender,
-                                              str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                              str(create_date(age, date_of_visit)),
                                               '1', str(date_of_visit), end_time, aggregate_url)
+        #TODO: use real rate for duplicate submissions
+        if random.random() < 0.05:
+                    submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'],
+                                                          ind_id, 'UNK', 'UNK', first_name, middle_name, last_name,
+                                                          gender, str(create_date(age, date_of_visit)),
+                                                          '1', str(date_of_visit), end_time, aggregate_url)
         #create memberships here, 2-9 for relationship
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_membership(start_time, ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),
@@ -337,6 +347,13 @@ def visit_social_group(social_group, round_number, date_of_visit):
             submission.submit_death_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                  individual['gender'], '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
                                                  str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
+            #TODO: dummy condition
+            if "isheadofhousehold" == True:
+                submission.submit_death_of_hoh_registration(start_time, individual['ind_id'], "TODO_NEW_HOH",
+                                                            field_worker['ext_id'], individual['gender'], '1',
+                                                            'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
+                                                            str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time,
+                                                            aggregate_url)
             individual['status'] == 'dead'
         if individual['status'] == 'present' and random.random() < 0.5:
             start_time, end_time = create_start_end_time(date_of_visit)
@@ -380,7 +397,7 @@ def simulate_inter_round():
             waiting_for_mirth = False
         else:
             print("waiting for mirth to process submissions, still: " + str(number_unprocessed))
-            time.sleep(5)
+            time.sleep(3)
 
 
 if __name__ == "__main__":
@@ -396,3 +413,5 @@ if __name__ == "__main__":
         simulate_inter_round()
     open_hds_connection.close()
     odk_connection.close()
+    with open(os.path.join(conf_dir, 'hdss_' + args.site + '.pkl'), 'w') as site_file:
+        pickle.dump(hdss, site_file)
