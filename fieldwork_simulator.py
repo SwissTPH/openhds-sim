@@ -186,6 +186,15 @@ def sample_gender():
         return 'M'
 
 
+def makes_mistake(event):
+    """Does FW make event-specific mistake?"""
+    if random.random() < site['fieldworker']['accuracy'][event]['rate']:
+        if site['fieldworker']['accuracy'][event]['max'] > 0:
+            site['fieldworker']['accuracy'][event]['max'] -= 1
+            return True
+    return False
+
+
 def create_date(event_age, survey_date=None):
     """Return the date of an event that happen event_age (in years) before survey_date"""
     if survey_date is None:
@@ -244,7 +253,8 @@ def create_location_hierarchy(location_hierarchy):
     open_hds_connection.commit()
 
 
-def create_social_group(social_group_size, round_number, date_of_visit):
+def create_social_group(social_group_size, round_number, start_date, end_date):
+    date_of_visit = create_date_from_interval(start_date, end_date)
     field_worker = random.choice(hdss['field_workers'])
     cursor = open_hds_connection.cursor()
     #sample location on lowest level of location hierarchy
@@ -268,11 +278,20 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     first_name = create_first_name(gender_of_head)
     middle_name = create_first_name(gender_of_head)
     start_time, end_time = create_start_end_time(date_of_visit)
-    submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
-                                          id_of_head, 'UNK',
-                                          'UNK', first_name, middle_name, last_name, gender_of_head,
-                                          str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
-                                          '1', str(date_of_visit), aggregate_url)
+    #migration date only for in_migrations. assume inmgration during this update round for now.
+    date_of_migration = create_date_from_interval(start_date, str(date_of_visit))
+    if round_number == '0':
+        submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                              id_of_head, 'UNK', 'UNK', first_name, middle_name, last_name,
+                                              gender_of_head, str(create_date(sample_age(min_age_head_of_social_group),
+                                                                              date_of_visit)),
+                                              '1', str(date_of_visit), aggregate_url)
+    else:
+        submission.submit_in_migration(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                       id_of_head, 'UNK', 'UNK', first_name, middle_name, last_name, gender_of_head,
+                                       str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                       '1', str(date_of_migration), aggregate_url)
+
     #create a social group
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_social_group_registration(start_time, sg_id, id_of_head, field_worker['ext_id'], last_name, "FAM",
@@ -283,8 +302,12 @@ def create_social_group(social_group_size, round_number, date_of_visit):
                                         'status': 'present'})
     #and make the head a member
     start_time, end_time = create_start_end_time(date_of_visit)
-    submission.submit_membership(start_time, id_of_head, sg_id, field_worker['ext_id'], '1', str(date_of_visit),
-                                 end_time, aggregate_url)
+    if round_number == '0':
+        submission.submit_membership(start_time, id_of_head, sg_id, field_worker['ext_id'], '1', str(date_of_visit),
+                                     end_time, aggregate_url)
+    else:
+        submission.submit_membership(start_time, id_of_head, sg_id, field_worker['ext_id'], '1', str(date_of_migration),
+                                     end_time, aggregate_url)
     for i in range(2, social_group_size):
         ind_id = location_id + str(i).zfill(3)
         gender = sample_gender()
@@ -292,17 +315,24 @@ def create_social_group(social_group_size, round_number, date_of_visit):
         middle_name = create_first_name(gender)
         age = sample_age()
         start_time, end_time = create_start_end_time(date_of_visit)
-        submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
-                                              ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
-                                              str(create_date(age, date_of_visit)),
-                                              '1', str(date_of_visit), aggregate_url)
-        #TODO: use real rate for duplicate submissions
-        if random.random() < 0.05:
-                    submission.submit_baseline_individual(start_time, end_time, location_id, visit_id,
-                                                          field_worker['ext_id'],
-                                                          ind_id, 'UNK', 'UNK', first_name, middle_name, last_name,
-                                                          gender, str(create_date(age, date_of_visit)),
-                                                          '1', str(date_of_visit), aggregate_url)
+        if round_number == '0':
+            submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                                  ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
+                                                  str(create_date(age, date_of_visit)),
+                                                  '1', str(date_of_visit), aggregate_url)
+            if makes_mistake('baseline'):
+                submission.submit_baseline_individual(start_time, end_time, location_id, visit_id,
+                                                      field_worker['ext_id'], ind_id, 'UNK', 'UNK', first_name,
+                                                      middle_name, last_name, gender,
+                                                      str(create_date(age, date_of_visit)),'1', str(date_of_visit),
+                                                      aggregate_url)
+
+        else:
+            submission.submit_in_migration(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                           ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
+                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                           '1', str(date_of_migration), aggregate_url)
+
         #create memberships here, 2-9 for relationship
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_membership(start_time, ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),
@@ -326,8 +356,7 @@ def simulate_baseline(round):
     popsize = 0
     while popsize < pop_size_baseline:
         social_group_size = np.random.poisson(individuals_per_social_group)
-        create_social_group(social_group_size, str(round['roundNumber']),
-                            create_date_from_interval(round['startDate'], round['endDate']))
+        create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
         popsize += social_group_size
 
 
@@ -391,13 +420,16 @@ def simulate_inter_round():
         number_unprocessed = 0
         processed_flag = config['odk_server']['processed_by_mirth_flag']
         for odk_form in config['odk_server']['forms']:
-            number_unprocessed += query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
+            unprocessed = query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
                                                .format(odk_form=odk_form,
                                                        processed=processed_flag))['count']
+            if unprocessed > 0:
+                print(odk_form + " unprocessed: " + str(unprocessed))
+                number_unprocessed += unprocessed
         if number_unprocessed == 0:
             waiting_for_mirth = False
         else:
-            print("waiting for mirth to process submissions, still: " + str(number_unprocessed))
+            print("Still waiting for Mirth...")
             time.sleep(3)
 
 
