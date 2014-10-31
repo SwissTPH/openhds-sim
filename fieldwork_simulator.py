@@ -407,7 +407,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
             individual['status'] == 'outside_hdss'
         #half of the external inmigration events happen into social groups
         #TODO: for now assume all inmigrants are previously unknown
-        if random.random() < inmigration_rate:
+        if random.random() < inmigration_rate/2:
             next_id = int(social_group['individuals'][-1]['ind_id'][-3:]) + 1
             ind_id = location_id + str(next_id).zfill(3)
             gender = sample_gender()
@@ -426,11 +426,13 @@ def visit_social_group(social_group, round_number, start_date, end_date):
                                                 'status': 'present'})
 
 
-
 def simulate_update(round):
     """Simulate an update round"""
     for social_group in hdss['social_groups']:
         visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
+        if random.random() < inmigration_rate/2:
+            social_group_size = np.random.poisson(individuals_per_social_group)
+            create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
 def simulate_round(round):

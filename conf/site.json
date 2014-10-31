@@ -28,8 +28,8 @@
         "visits_per_day": 10,
         "accuracy": {
             "baseline": {
-                "rate": 0.5,
-                "max": 3
+                "rate": 0,
+                "max": 0
             }
         }
     },
@@ -107,7 +107,7 @@
             "startDate": "2013-06-15"
         },
         {
-            "endDate": "2014-10-10",
+            "endDate": "2014-10-31",
             "remarks": "Second update",
             "roundNumber": 2,
             "startDate": "2014-09-15"
