@@ -1,5 +1,6 @@
 {
     "general": {
+        "pickle_out": "baseline.pkl",
         "area_polygon":
             [["47.56", "7.55"],
             ["47.56", "7.64"],
@@ -28,8 +29,8 @@
         "visits_per_day": 10,
         "accuracy": {
             "baseline": {
-                "rate": 0.5,
-                "max": 3
+                "rate": 0,
+                "max": 0
             }
         }
     },
@@ -99,18 +100,6 @@
             "remarks": "Baseline",
             "roundNumber": 0,
             "startDate": "2013-03-15"
-        },
-        {
-            "endDate": "2013-09-14",
-            "remarks": "First update",
-            "roundNumber": 1,
-            "startDate": "2013-06-15"
-        },
-        {
-            "endDate": "2014-10-10",
-            "remarks": "Second update",
-            "roundNumber": 2,
-            "startDate": "2014-09-15"
         }
     ]
 }

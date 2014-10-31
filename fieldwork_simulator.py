@@ -61,13 +61,13 @@ def create_uuid():
     return str(uuid.uuid1()).replace('-', '')
 
 
-def init(truncate_db, site_config):
+def init(site_config):
     """Initialization"""
     global config, m_first_names, f_first_names, last_names, aggregate_url, open_hds_connection, odk_connection
     global area_polygon, area_extent, locations_per_social_group, individuals_per_social_group
     global pop_size_baseline, site, min_age_head_of_social_group, proportion_females, birth_rate, death_rate
     global inmigration_rate, outmigration_rate, internal_migration_rate
-    global min_age_marriage
+    global min_age_marriage, hdss
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
     with open(os.path.join(conf_dir, site_config + '.json')) as site_file:
@@ -111,10 +111,14 @@ def init(truncate_db, site_config):
     inmigration_rate = site['general']['inmigration_rate']
     outmigration_rate = site['general']['outmigration_rate']
     internal_migration_rate = site['general']['internal_migration_rate']
-    if truncate_db:
+    #either load population from pickle, or re-init db and create hdss dictionary
+    if not 'pickle_in' in site['general']:
         clean_db()
         create_fws(site['fieldworker'])
         create_location_hierarchy(site['locationhierarchy'])
+    else:
+        with open(os.path.join(conf_dir, site['general']['pickle_in'])) as f:
+            hdss = pickle.load(f)
 
 
 def clean_db():
@@ -465,15 +469,15 @@ def simulate_inter_round():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--site', help='Json file with site description, located in conf dir', required=True)
-    parser.add_argument('-t', '--truncate', help='Truncate all database tables?', action='store_true')
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
-    init(args.truncate, args.site)
+    init(args.site)
     for round in site['round']:
         print(round)
         simulate_round(round)
         simulate_inter_round()
     open_hds_connection.close()
     odk_connection.close()
-    with open(os.path.join(conf_dir, 'hdss_' + args.site + '.pkl'), 'w') as site_file:
-        pickle.dump(hdss, site_file)
+    if 'pickle_out' in site['general']:
+        with open(os.path.join(conf_dir, site['general']['pickle_out']), 'w') as site_file:
+            pickle.dump(hdss, site_file)
