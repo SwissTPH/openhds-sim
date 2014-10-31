@@ -75,13 +75,13 @@ def submit_baseline_individual(start, end, location_id, visit_id, fieldworker_id
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_in_migration(start, end, location_id, visit_id, fieldworker_id, individual_id, mother_id, father_id,
-                        first_name, middle_name, last_name, gender, date_of_birth, partial_date,
+def submit_in_migration(start, end, migration_type, location_id, visit_id, fieldworker_id, individual_id, mother_id,
+                        father_id, first_name, middle_name, last_name, gender, date_of_birth, partial_date,
                         date_of_migration, aggregate_url):
     """Register an inmigration"""
     form_dict = {"id": "in_migration",
-                 "fields": [["start", start], ["end", end], ["migrationType", "BASELINE"], ["locationId", location_id],
-                            ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
+                 "fields": [["start", start], ["end", end], ["migrationType", migration_type],
+                            ["locationId", location_id], ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
                                                 ["fatherId", father_id], ["firstName", first_name],
                                                 ["middleName", middle_name], ["lastName", last_name],

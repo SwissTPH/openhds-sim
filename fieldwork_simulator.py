@@ -38,10 +38,9 @@ min_age_marriage = 0
 proportion_females = 0.5
 birth_rate = 0
 death_rate = 0
-ext_inmigration_rate = 0
-ext_outmigration_rate = 0
-int_inmigration_rate = 0
-int_outmigration_rate = 0
+inmigration_rate = 0
+outmigration_rate = 0
+internal_migration_rate = 0
 
 t = 0
 
@@ -67,7 +66,7 @@ def init(truncate_db, site_config):
     global config, m_first_names, f_first_names, last_names, aggregate_url, open_hds_connection, odk_connection
     global area_polygon, area_extent, locations_per_social_group, individuals_per_social_group
     global pop_size_baseline, site, min_age_head_of_social_group, proportion_females, birth_rate, death_rate
-    global ext_inmigration_rate, ext_outmigration_rate, int_inmigration_rate, int_outmigration_rate
+    global inmigration_rate, outmigration_rate, internal_migration_rate
     global min_age_marriage
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
@@ -109,10 +108,9 @@ def init(truncate_db, site_config):
     proportion_females = 1 / (1 + site['general']['sex_ratio'])
     birth_rate = site['general']['birth_rate']
     death_rate = site['general']['death_rate']
-    ext_inmigration_rate = site['general']['ext_inmigration_rate']
-    ext_outmigration_rate = site['general']['ext_outmigration_rate']
-    int_inmigration_rate = site['general']['int_inmigration_rate']
-    int_outmigration_rate = site['general']['int_outmigration_rate']
+    inmigration_rate = site['general']['inmigration_rate']
+    outmigration_rate = site['general']['outmigration_rate']
+    internal_migration_rate = site['general']['internal_migration_rate']
     if truncate_db:
         clean_db()
         create_fws(site['fieldworker'])
@@ -295,7 +293,8 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
                                                                               date_of_visit)),
                                               '1', str(date_of_visit), aggregate_url)
     else:
-        submission.submit_in_migration(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+        submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
+                                       field_worker['ext_id'],
                                        id_of_head, 'UNK', 'UNK', first_name, middle_name, last_name, gender_of_head,
                                        str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
                                        '1', str(date_of_migration), aggregate_url)
@@ -336,9 +335,10 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
                                                       aggregate_url)
 
         else:
-            submission.submit_in_migration(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+            submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
+                                           field_worker['ext_id'],
                                            ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
-                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                           str(create_date(age, date_of_visit)),
                                            '1', str(date_of_migration), aggregate_url)
 
         #create memberships here, 2-9 for relationship
@@ -368,7 +368,8 @@ def simulate_baseline(round):
         popsize += social_group_size
 
 
-def visit_social_group(social_group, round_number, date_of_visit):
+def visit_social_group(social_group, round_number, start_date, end_date):
+    date_of_visit = create_date_from_interval(start_date, end_date)
     field_worker = random.choice(hdss['field_workers'])
     #TODO: only one location per social group for now
     location_id = social_group['locations'][0]['location_id']
@@ -387,26 +388,45 @@ def visit_social_group(social_group, round_number, date_of_visit):
                                                  str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
             individual['status'] == 'dead'
             #TODO: dummy condition
-            if "isheadofhousehold" == True:
+            if "isheadofhousehold" == "True":
                 submission.submit_death_of_hoh_registration(start_time, individual['ind_id'], "TODO_NEW_HOH",
                                                             field_worker['ext_id'], individual['gender'], '1',
                                                             'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
                                                             str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time,
                                                             aggregate_url)
         #TODO: for now define outmigration rate as per visit rate
-        if individual['status'] == 'present' and random.random() < ext_outmigration_rate:
+        if individual['status'] == 'present' and random.random() < outmigration_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                          visit_id, str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
                                                          'REC', end_time, aggregate_url)
             individual['status'] == 'outside_hdss'
+        #half of the external inmigration events happen into social groups
+        #TODO: for now assume all inmigrants are previously unknown
+        if random.random() < inmigration_rate:
+            next_id = int(social_group['individuals'][-1]['ind_id'][-3:]) + 1
+            ind_id = location_id + str(next_id).zfill(3)
+            gender = sample_gender()
+            first_name = create_first_name(gender)
+            middle_name = create_first_name(gender)
+            last_name = create_last_name()
+            age = sample_age()
+            date_of_migration = create_date_from_interval(start_date, str(date_of_visit))
+            start_time, end_time = create_start_end_time(date_of_visit)
+            submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
+                                           field_worker['ext_id'],
+                                           ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
+                                           str(create_date(age, date_of_visit)),
+                                           '1', str(date_of_migration), aggregate_url)
+            social_group['individuals'].append({'ind_id': ind_id, 'gender': gender, 'last_seen': date_of_visit,
+                                                'status': 'present'})
+
 
 
 def simulate_update(round):
     """Simulate an update round"""
     for social_group in hdss['social_groups']:
-        date_of_visit = create_date_from_interval(round['startDate'], round['endDate'])
-        visit_social_group(social_group, str(round['roundNumber']), date_of_visit)
+        visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
 def simulate_round(round):
