@@ -268,10 +268,11 @@ def create_social_group(social_group_size, round_number, date_of_visit):
     first_name = create_first_name(gender_of_head)
     middle_name = create_first_name(gender_of_head)
     start_time, end_time = create_start_end_time(date_of_visit)
-    submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], id_of_head, 'UNK',
+    submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                          id_of_head, 'UNK',
                                           'UNK', first_name, middle_name, last_name, gender_of_head,
                                           str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
-                                          '1', str(date_of_visit), end_time, aggregate_url)
+                                          '1', str(date_of_visit), aggregate_url)
     #create a social group
     start_time, end_time = create_start_end_time(date_of_visit)
     submission.submit_social_group_registration(start_time, sg_id, id_of_head, field_worker['ext_id'], last_name, "FAM",
@@ -291,17 +292,17 @@ def create_social_group(social_group_size, round_number, date_of_visit):
         middle_name = create_first_name(gender)
         age = sample_age()
         start_time, end_time = create_start_end_time(date_of_visit)
-        submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'], ind_id,
-                                              'UNK', 'UNK', first_name, middle_name,
-                                              last_name, gender,
+        submission.submit_baseline_individual(start_time, end_time, location_id, visit_id, field_worker['ext_id'],
+                                              ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
                                               str(create_date(age, date_of_visit)),
-                                              '1', str(date_of_visit), end_time, aggregate_url)
+                                              '1', str(date_of_visit), aggregate_url)
         #TODO: use real rate for duplicate submissions
         if random.random() < 0.05:
-                    submission.submit_baseline_individual(start_time, location_id, visit_id, field_worker['ext_id'],
+                    submission.submit_baseline_individual(start_time, end_time, location_id, visit_id,
+                                                          field_worker['ext_id'],
                                                           ind_id, 'UNK', 'UNK', first_name, middle_name, last_name,
                                                           gender, str(create_date(age, date_of_visit)),
-                                                          '1', str(date_of_visit), end_time, aggregate_url)
+                                                          '1', str(date_of_visit), aggregate_url)
         #create memberships here, 2-9 for relationship
         start_time, end_time = create_start_end_time(date_of_visit)
         submission.submit_membership(start_time, ind_id, sg_id, field_worker['ext_id'], str(random.randint(2, 9)),

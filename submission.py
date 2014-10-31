@@ -57,19 +57,32 @@ def submit_from_dict(form_dict, aggregate_url):
     submit_data(etree.tostring(root), aggregate_url)
 
 
-def submit_baseline_individual(start, location_id, visit_id, fieldworker_id, individual_id, mother_id, father_id,
+def submit_baseline_individual(start, end, location_id, visit_id, fieldworker_id, individual_id, mother_id, father_id,
                                first_name, middle_name, last_name, gender, date_of_birth, partial_date,
-                               date_of_visit, end, aggregate_url):
+                               date_of_visit, aggregate_url):
+    """Register an individual during baseline"""
+    #dateOfMigration is date of  visit by definition
     form_dict = {"id": "baseline",
-                 "fields": [["start", start], ["migrationType", "BASELINE"], ["locationId", location_id],
+                 "fields": [["start", start], ["end", end], ["migrationType", "BASELINE"], ["locationId", location_id],
                             ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
-                                                ["fatherId", father_id],
-                                                ["firstName", first_name], ["middleName", middle_name],
-                                                ["lastName", last_name], ["gender", gender],
-                                                ["dateOfBirth", date_of_birth], ["partialDate", partial_date]]],
-                            ["dateOfMigration", date_of_visit], ["visitDate", date_of_visit],
-                            ["majo4mo", "yes"], ["spelasni", "yes"], ["end", end]]}
+                                                ["fatherId", father_id], ["firstName", first_name],
+                                                ["middleName", middle_name], ["lastName", last_name],
+                                                ["gender", gender], ["dateOfBirth", date_of_birth],
+                                                ["partialDate", partial_date]]],
+                            ["dateOfMigration", date_of_visit], ["warning", ""], ["majo4mo", "yes"],
+                            ["visitDate", date_of_visit], ["spelasni", "yes"]]}
+    return submit_from_dict(form_dict, aggregate_url)
+
+
+def submit_in_migration(start, migration_type, location_id, visit_id, fieldworker_id, individual_id,
+                        date_of_migration, origin, reason, marital_change, moved_from, end, aggregate_url):
+    """Register an inmigration"""
+    form_dict = {"id": "in_migration",
+                 "fields": [["start", start], ["migrationType", migration_type], ["locationId", location_id],
+                            ["visitId", visit_id], ["fieldWorkerId", fieldworker_id], ["individualId", individual_id],
+                            ["dateOfMigration", date_of_migration], ["origin", origin], ["reason", reason],
+                            ["maritalChange", marital_change], ["movedFrom", moved_from], ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
@@ -129,17 +142,6 @@ def submit_death_of_hoh_registration(start, individual_id, new_hoh_id, field_wor
                             ["causeOfDeath", cause_of_death], ["dateOfDeath", date_of_death],
                             ["placeOfDeath", place_of_death], ["placeOfDeathOther", place_of_death_other],
                             ["end", end]]}
-    return submit_from_dict(form_dict, aggregate_url)
-
-
-def submit_in_migration(start, migration_type, location_id, visit_id, fieldworker_id, individual_id,
-                        date_of_migration, origin, reason, marital_change, moved_from, end, aggregate_url):
-    """Register an inmigration or baseline registration"""
-    form_dict = {"id": "in_migration",
-                 "fields": [["start", start], ["migrationType", migration_type], ["locationId", location_id],
-                            ["visitId", visit_id], ["fieldWorkerId", fieldworker_id], ["individualId", individual_id],
-                            ["dateOfMigration", date_of_migration], ["origin", origin], ["reason", reason],
-                            ["maritalChange", marital_change], ["movedFrom", moved_from], ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
