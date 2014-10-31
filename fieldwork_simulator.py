@@ -38,6 +38,10 @@ min_age_marriage = 0
 proportion_females = 0.5
 birth_rate = 0
 death_rate = 0
+ext_inmigration_rate = 0
+ext_outmigration_rate = 0
+int_inmigration_rate = 0
+int_outmigration_rate = 0
 
 t = 0
 
@@ -63,6 +67,7 @@ def init(truncate_db, site_config):
     global config, m_first_names, f_first_names, last_names, aggregate_url, open_hds_connection, odk_connection
     global area_polygon, area_extent, locations_per_social_group, individuals_per_social_group
     global pop_size_baseline, site, min_age_head_of_social_group, proportion_females, birth_rate, death_rate
+    global ext_inmigration_rate, ext_outmigration_rate, int_inmigration_rate, int_outmigration_rate
     global min_age_marriage
     with open(os.path.join(conf_dir, 'config.json')) as config_file:
         config = json.load(config_file)
@@ -104,7 +109,10 @@ def init(truncate_db, site_config):
     proportion_females = 1 / (1 + site['general']['sex_ratio'])
     birth_rate = site['general']['birth_rate']
     death_rate = site['general']['death_rate']
-
+    ext_inmigration_rate = site['general']['ext_inmigration_rate']
+    ext_outmigration_rate = site['general']['ext_outmigration_rate']
+    int_inmigration_rate = site['general']['int_inmigration_rate']
+    int_outmigration_rate = site['general']['int_outmigration_rate']
     if truncate_db:
         clean_db()
         create_fws(site['fieldworker'])
@@ -371,12 +379,13 @@ def visit_social_group(social_group, round_number, date_of_visit):
                                          social_group['locations'][0]['coordinates'],
                                          end_time, aggregate_url)
     for individual in social_group['individuals']:
-        #TODO: here decide for each individual if/which event occurred. For now just test some submissions.
-        if individual['status'] == 'present' and random.random() < 0.2:
+        #TODO: for now define death rate as per visit rate
+        if individual['status'] == 'present' and random.random() < death_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_death_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                  individual['gender'], '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
                                                  str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
+            individual['status'] == 'dead'
             #TODO: dummy condition
             if "isheadofhousehold" == True:
                 submission.submit_death_of_hoh_registration(start_time, individual['ind_id'], "TODO_NEW_HOH",
@@ -384,8 +393,8 @@ def visit_social_group(social_group, round_number, date_of_visit):
                                                             'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
                                                             str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time,
                                                             aggregate_url)
-            individual['status'] == 'dead'
-        if individual['status'] == 'present' and random.random() < 0.5:
+        #TODO: for now define outmigration rate as per visit rate
+        if individual['status'] == 'present' and random.random() < ext_outmigration_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                          visit_id, str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
