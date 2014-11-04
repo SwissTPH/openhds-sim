@@ -474,10 +474,15 @@ if __name__ == "__main__":
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
     init(args.site)
-    for round in site['round']:
-        print(round)
-        simulate_round(round)
-        simulate_inter_round()
+    if 'fixedEvents' in site:
+        for event in site['fixedEvents']:
+            submission.submit_from_dict(event, aggregate_url)
+    #TODO: for now do either fixed events or simulate rounds
+    else:
+        for round in site['round']:
+            print(round)
+            simulate_round(round)
+            simulate_inter_round()
     open_hds_connection.close()
     odk_connection.close()
     if 'pickle_out' in site['general']:
