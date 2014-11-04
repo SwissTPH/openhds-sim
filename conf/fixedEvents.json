@@ -8,7 +8,7 @@
         ],
         "start_date": "2012-05-30",
         "end_date": "2012-05-30",
-        "pop_size_baseline": 30,
+        "pop_size_baseline": 0,
         "birth_rate": 0.31,
         "death_rate": 0.25,
         "inmigration_rate": 0.25,
@@ -94,7 +94,13 @@
             }
         ]
     },
-    "fixedEvents": [
+    "round": [
+        {
+            "endDate": "2013-06-14",
+            "remarks": "Baseline",
+            "roundNumber": 0,
+            "startDate": "2013-03-15",
+            "fixedEvents": [
         {
             "fields": [
                 ["start", "2013-03-29T11:29:24.000+03"],
@@ -163,43 +169,74 @@
             ],
             "id": "membership"
         }
+    ]
+        }
         ,
         {
+            "endDate": "2013-8-15",
+            "remarks": "First update",
+            "roundNumber": 1,
+            "startDate": "2013-07-15",
+            "fixedEvents": [
+        {
             "fields": [
-                ["start", "2013-05-14T07:43:29.000+03"],
-                ["visitId", "GND000001000"],
+                ["start", "2013-08-14T07:43:29.000+03"],
+                ["visitId", "GND000001001"],
                 ["fieldWorkerId", "data"],
                 ["locationId", "GND000001"],
                 ["roundNumber", "1"],
-                ["visitDate", "2013-05-14"],
+                ["visitDate", "2013-08-14"],
                 ["intervieweeId", "GND000001001"],
                 ["correctInterviewee", "1"],
                 ["farmhouse", "0"],
                 ["coordinates", "47.5317248916 7.60917682221 0 0"],
-                ["end", "2013-05-14T08:21:06.000+03"]
+                ["end", "2013-08-14T08:21:06.000+03"]
             ],
             "id": "visit_registration"
-        }
-        ,
+        },
+                {
+
+                    "fields": [
+                        ["start", "2013-08-14T09:21:36.000+03"],
+                        ["individualId", "GND000001001"],
+                        ["fieldWorkerId", "data"],
+                        ["visitId", "GND000001001"],
+                        ["dateOfMigration", "2013-08-02"],
+                        ["nameOfDestination", "Elsewhere in Switzerland"],
+                        ["reasonForOutMigration", "MARITAL_CHANGE"],
+                        ["maritalChange", "REC"],
+                        ["end", "2013-08-14T09:55:14.000+03"]
+                    ],
+                    "id": "out_migration_registration"
+                }
+            ]
+        },
         {
+            "endDate": "2013-11-14",
+            "remarks": "Second update",
+            "roundNumber": 2,
+            "startDate": "2013-09-15",
+            "fixedEvents": [
+                {
             "fields": [
-                ["start", "2013-05-14T09:21:36.000+03"],
-                ["individualId", "GND000001001"],
+                ["start", "2013-10-14T07:43:29.000+03"],
+                ["visitId", "GND000001002"],
                 ["fieldWorkerId", "data"],
-                ["visitId", "GND000001001"],
-                ["dateOfMigration", "2013-04-02"],
-                ["nameOfDestination", "DESTINATION"],
-                ["reasonForOutMigration", "MARITAL_CHANGE"],
-                ["maritalChange", "REC"],
-                ["end", "2013-05-14T09:55:14.000+03"]
+                ["locationId", "GND000001"],
+                ["roundNumber", "2"],
+                ["visitDate", "2013-10-14"],
+                ["intervieweeId", "GND000001001"],
+                ["correctInterviewee", "1"],
+                ["farmhouse", "0"],
+                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                ["end", "2013-10-14T08:21:06.000+03"]
             ],
-            "id": "out_migration_registration"
-        }
-        ,
+            "id": "visit_registration"
+        },
         {
             "fields": [
-                ["start", "2013-05-14T10:17:48.000+03"],
-                ["end", "2013-05-14T10:43:04.000+03"],
+                ["start", "2013-10-14T10:17:48.000+03"],
+                ["end", "2013-10-14T10:43:04.000+03"],
                 ["migrationType", "EXTERNAL_INMIGRATION"],
                 ["locationId", "GND000001"],
                 ["visitId", "GND000001001"],
@@ -215,7 +252,7 @@
                     ["dateOfBirth", "1972-07-14"],
                     ["partialDate", "1"]
                 ]],
-                ["dateOfMigration", "2013-05-01"],
+                ["dateOfMigration", "2013-09-31"],
                 ["warning", ""],
                 ["origin", "other"],
                 ["reason", "NA"],
@@ -226,10 +263,33 @@
             ],
             "id": "in_migration"
         }
-        ,
+    ]
+        },
+        {
+            "endDate": "2014-10-31",
+            "remarks": "Third update",
+            "roundNumber": 3,
+            "startDate": "2014-06-15",
+            "fixedEvents": [
+                {
+            "fields": [
+                ["start", "2014-10-14T07:43:29.000+03"],
+                ["visitId", "GND000001003"],
+                ["fieldWorkerId", "data"],
+                ["locationId", "GND000001"],
+                ["roundNumber", "3"],
+                ["visitDate", "2014-10-14"],
+                ["intervieweeId", "GND000001001"],
+                ["correctInterviewee", "1"],
+                ["farmhouse", "0"],
+                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                ["end", "2014-10-14T08:21:06.000+03"]
+            ],
+            "id": "visit_registration"
+        },
         {
             "fields": [
-                ["start", "2013-05-14T10:42:43.000+03"],
+                ["start", "2014-10-14T10:42:43.000+03"],
                 ["individualId", "GND000001001"],
                 ["fieldWorkerId", "data"],
                 ["gender", "M"],
@@ -238,12 +298,14 @@
                 ["haveDeathCertificate", "1"],
                 ["visitId", "ISE000001001"],
                 ["causeOfDeath", "CAUSE_OF_DEATH"],
-                ["dateOfDeath", "2013-05-10"],
+                ["dateOfDeath", "2014-09-10"],
                 ["placeOfDeath", "OTHER"],
                 ["placeOfDeathOther", "OTHERPLACE"],
-                ["end", "2013-05-14T11:26:38.000+03"]
+                ["end", "2014-10-14T11:26:38.000+03"]
             ],
             "id": "death_registration"
+        }
+    ]
         }
     ]
 }

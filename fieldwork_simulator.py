@@ -441,6 +441,9 @@ def simulate_round(round):
     cursor = open_hds_connection.cursor()
     cursor.execute("INSERT INTO round VALUES ('{uuid}','{endDate}','{remarks}','{roundNumber}',"
                    "'{startDate}')".format(uuid=create_uuid(), **round))
+    if 'fixedEvents' in round:
+        for event in round['fixedEvents']:
+            submission.submit_from_dict(event, aggregate_url)
     if round['remarks'] == 'Baseline':
         simulate_baseline(round)
     else:
@@ -474,15 +477,10 @@ if __name__ == "__main__":
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
     init(args.site)
-    if 'fixedEvents' in site:
-        for event in site['fixedEvents']:
-            submission.submit_from_dict(event, aggregate_url)
-    #TODO: for now do either fixed events or simulate rounds
-    else:
-        for round in site['round']:
-            print(round)
-            simulate_round(round)
-            simulate_inter_round()
+    for round in site['round']:
+        print(round)
+        simulate_round(round)
+        simulate_inter_round()
     open_hds_connection.close()
     odk_connection.close()
     if 'pickle_out' in site['general']:
