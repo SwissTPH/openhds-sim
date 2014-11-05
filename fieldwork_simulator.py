@@ -459,8 +459,7 @@ def simulate_inter_round():
         processed_flag = config['odk_server']['processed_by_mirth_flag']
         for odk_form in config['odk_server']['forms']:
             unprocessed = query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
-                                               .format(odk_form=odk_form,
-                                                       processed=processed_flag))['count']
+                                               .format(odk_form=odk_form, processed=processed_flag))['count']
             if unprocessed > 0:
                 print(odk_form + " unprocessed: " + str(unprocessed))
                 number_unprocessed += unprocessed
