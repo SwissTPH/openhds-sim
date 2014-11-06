@@ -237,29 +237,17 @@
             "fields": [
                 ["start", "2013-10-14T10:17:48.000+03"],
                 ["end", "2013-10-14T10:43:04.000+03"],
-                ["migrationType", "EXTERNAL_INMIGRATION"],
+                ["migrationType", "INTERNAL_INMIGRATION"],
                 ["locationId", "GND000001"],
                 ["visitId", "GND000001002"],
                 ["fieldWorkerId", "data"],
                 ["individualInfo", [
-                    ["individualId", "GND000001001"],
-                    ["motherId", "UNK"],
-                    ["fatherId", "UNK"],
-                    ["firstName", "Sara"],
-                    ["middleName", "Eleonora"],
-                    ["lastName", "Kaufmann"],
-                    ["gender", "F"],
-                    ["dateOfBirth", "1972-07-14"],
-                    ["partialDate", "1"]
+                    ["individualId", "GND000001001"]
                 ]],
-                ["dateOfMigration", "2013-09-31"],
-                ["warning", ""],
-                ["origin", "other"],
-                ["reason", "NA"],
-                ["maritalChange", "NA"],
-                ["reasonOther", "NA"],
-                ["movedfrom", "NA"],
-                ["shortorlongstay", "NA"]
+                ["dateOfMigration", "2013-09-30"],
+                ["origin", "GND000001"],
+                ["reason", "WORK"],
+                ["shortorlongstay", "3"]
             ],
             "id": "in_migration"
         }
