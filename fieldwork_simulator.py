@@ -450,7 +450,7 @@ def simulate_round(round):
         simulate_update(round)
 
 
-def simulate_inter_round():
+def simulate_inter_round(round):
     #wait for mirth to finish transferring data to openhds
     waiting_for_mirth = True
     while waiting_for_mirth:
@@ -467,6 +467,9 @@ def simulate_inter_round():
             waiting_for_mirth = False
         else:
             print("Still waiting for Mirth...")
+            if round['remarks'] != 'Baseline':
+                print("Make sure you have your Baseline channels stopped, and your Update channels started")
+            print("")
             time.sleep(3)
 
 
@@ -479,7 +482,7 @@ if __name__ == "__main__":
     for round in site['round']:
         print(round)
         simulate_round(round)
-        simulate_inter_round()
+        simulate_inter_round(round)
     open_hds_connection.close()
     odk_connection.close()
     if 'pickle_out' in site['general']:
