@@ -101,6 +101,19 @@
             "roundNumber": 0,
             "startDate": "2013-03-15",
             "fixedEvents": [
+                        {
+            "fields": [
+                ["start", "2013-03-29T11:05:37.000+03"],
+                ["householdId", "GND00000100"],
+                ["individualId", "GND000001001"],
+                ["fieldWorkerId", "data"],
+                ["groupName", "Kaufmann"],
+                ["socialGroupType", "FAM"],
+                ["end", "2013-03-29T11:30:56.000+03"]
+            ],
+            "id": "social_group_registration"
+        }
+        ,
         {
             "fields": [
                 ["start", "2013-03-29T11:29:24.000+03"],
@@ -142,19 +155,6 @@
                 ["spelasni", "yes"]
             ],
             "id": "baseline"
-        }
-        ,
-        {
-            "fields": [
-                ["start", "2013-03-29T11:05:37.000+03"],
-                ["householdId", "GND00000100"],
-                ["individualId", "GND000001001"],
-                ["fieldWorkerId", "data"],
-                ["groupName", "Kaufmann"],
-                ["socialGroupType", "FAM"],
-                ["end", "2013-03-29T11:30:56.000+03"]
-            ],
-            "id": "social_group_registration"
         }
         ,
         {
@@ -254,7 +254,7 @@
     ]
         },
         {
-            "endDate": "2014-10-31",
+            "endDate": "2014-11-07",
             "remarks": "Third update",
             "roundNumber": 3,
             "startDate": "2014-06-15",

@@ -435,6 +435,14 @@ def simulate_update(round):
             create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
+def submit_fixed_event(event):
+    submission.submit_from_dict(event, aggregate_url)
+    if event['id'] == 'social_group_registration':
+        social_group = {'sg_id': event['fields'][1][1], 'individuals': [], 'locations': []}
+        hdss['social_groups'].append(social_group)
+    #TODO: deal with locations and individuals
+
+
 def simulate_round(round):
     """Simulate a baseline or update round. Discrete time simulation with daily time steps,
     assumes number of events >> number of days per round"""
@@ -443,7 +451,7 @@ def simulate_round(round):
                    "'{startDate}')".format(uuid=create_uuid(), **round))
     if 'fixedEvents' in round:
         for event in round['fixedEvents']:
-            submission.submit_from_dict(event, aggregate_url)
+            submit_fixed_event(event)
     if round['remarks'] == 'Baseline':
         simulate_baseline(round)
     else:
