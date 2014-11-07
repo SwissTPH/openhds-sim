@@ -440,7 +440,19 @@ def submit_fixed_event(event):
     if event['id'] == 'social_group_registration':
         social_group = {'sg_id': event['fields'][1][1], 'individuals': [], 'locations': []}
         hdss['social_groups'].append(social_group)
-    #TODO: deal with locations and individuals
+    if event['id'] == 'location_registration':
+    #TODO: properly deal with locations
+        location_id = event['fields'][3][1]
+        location = {'location_id': location_id, 'coordinates': event['fields'][7][1]}
+        social_group = hdss['social_groups'][0]
+        social_group['locations'].append(location)
+    if event['id'] == 'membership':
+        social_group = hdss['social_groups'][0]
+        individual = event['fields'][1][1]
+        start_date = event['fields'][5][1]
+        #TODO: properly deal with individuals
+        social_group['individuals'].append({'ind_id': individual, 'gender': 'F', 'last_seen': start_date,
+                                            'status': 'present'})
 
 
 def simulate_round(round):
