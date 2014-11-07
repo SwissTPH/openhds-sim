@@ -274,10 +274,6 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
     location_index = len(hdss['social_groups']) + 1
     location_id = area + str(location_index).zfill(6)
     coordinates = sample_coordinates()
-    start_time, end_time = create_start_end_time(date_of_visit)
-    submission.submit_location_registration(start_time, area, field_worker['ext_id'], location_id, 'Location name',
-                                            'Ten cell leader', 'RUR', coordinates,
-                                            end_time, aggregate_url)
     visit_id = location_id + round_number.zfill(3)
     ind_id = ''
     sg_id = location_id + '00'
@@ -287,6 +283,10 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
     gender_of_head = sample_gender()
     first_name = create_first_name(gender_of_head)
     middle_name = create_first_name(gender_of_head)
+    start_time, end_time = create_start_end_time(date_of_visit)
+    submission.submit_location_registration(start_time, area, field_worker['ext_id'], location_id, last_name,
+                                            'Ten cell leader', 'RUR', coordinates,
+                                            end_time, aggregate_url)
     start_time, end_time = create_start_end_time(date_of_visit)
     #migration date only for in_migrations. assume inmgration during this update round for now.
     date_of_migration = create_date_from_interval(start_date, str(date_of_visit))
