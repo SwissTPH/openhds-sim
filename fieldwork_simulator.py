@@ -435,24 +435,27 @@ def simulate_update(round):
             create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
-def submit_fixed_event(event):
-    submission.submit_from_dict(event, aggregate_url)
-    if event['id'] == 'social_group_registration':
-        social_group = {'sg_id': event['fields'][1][1], 'individuals': [], 'locations': []}
-        hdss['social_groups'].append(social_group)
-    if event['id'] == 'location_registration':
-    #TODO: properly deal with locations
-        location_id = event['fields'][3][1]
-        location = {'location_id': location_id, 'coordinates': event['fields'][7][1]}
-        social_group = hdss['social_groups'][0]
-        social_group['locations'].append(location)
-    if event['id'] == 'membership':
-        social_group = hdss['social_groups'][0]
-        individual = event['fields'][1][1]
-        start_date = event['fields'][5][1]
-        #TODO: properly deal with individuals
-        social_group['individuals'].append({'ind_id': individual, 'gender': 'F', 'last_seen': start_date,
-                                            'status': 'present'})
+def submit_fixed_events(household):
+    household_id = household['householdId']
+    forms = household['forms']
+    for form in forms:
+        submission.submit_from_dict(form, aggregate_url)
+        social_group = next((item for item in hdss['social_groups'] if item['sg_id'] == household_id), None)
+        #social_group = (item for item in hdss['social_groups'] if item['sg_id'] == household_id).next()
+        if not social_group:
+            social_group = {'sg_id': household_id, 'individuals': [], 'locations': []}
+            hdss['social_groups'].append(social_group)
+        if form['id'] == 'location_registration':
+            location_id = form['fields'][3][1]
+            location = {'location_id': location_id, 'coordinates': form['fields'][7][1]}
+            print(social_group)
+            social_group['locations'].append(location)
+        if form['id'] == 'membership':
+            individual = form['fields'][1][1]
+            start_date = form['fields'][5][1]
+            #TODO: properly deal with individuals
+            social_group['individuals'].append({'ind_id': individual, 'gender': 'F', 'last_seen': start_date,
+                                                'status': 'present'})
 
 
 def simulate_round(round):
@@ -462,8 +465,8 @@ def simulate_round(round):
     cursor.execute("INSERT INTO round VALUES ('{uuid}','{endDate}','{remarks}','{roundNumber}',"
                    "'{startDate}')".format(uuid=create_uuid(), **round))
     if 'fixedEvents' in round:
-        for event in round['fixedEvents']:
-            submit_fixed_event(event)
+        for household in round['fixedEvents']:
+            submit_fixed_events(household)
     if round['remarks'] == 'Baseline':
         simulate_baseline(round)
     else:
