@@ -5,7 +5,6 @@
 __email__ = "nicolas.maire@unibas.ch"
 __status__ = "Alpha"
 
-import uuid
 import json
 import datetime
 import os
@@ -16,6 +15,7 @@ import time
 from matplotlib.path import Path
 import argparse
 import submission
+import util
 import pickle
 
 conf_dir = 'conf'
@@ -45,20 +45,6 @@ internal_migration_rate = 0
 t = 0
 
 hdss = {'field_workers': [], 'social_groups': []}
-
-
-def query_db_all(db_cursor, query):
-    db_cursor.execute(query)
-    return db_cursor.fetchall()
-
-
-def query_db_one(db_cursor, query):
-    db_cursor.execute(query)
-    return db_cursor.fetchone()
-
-
-def create_uuid():
-    return str(uuid.uuid1()).replace('-', '')
 
 
 def init(site_config):
@@ -238,7 +224,7 @@ def create_fws(fieldworker):
     cursor = open_hds_connection.cursor()
     #first add a default fieldworker named Data Data, username data, for use in a the standard tablet emulator
     cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
-                   "('{uu_id}','data', 'Data', 'Data', false)".format(uu_id=create_uuid()))
+                   "('{uu_id}','data', 'Data', 'Data', false)".format(uu_id=util.create_uuid()))
     number = fieldworker['number']
     for i in range(1, number + 1):
         first_name = create_first_name(sample_gender())
@@ -247,7 +233,7 @@ def create_fws(fieldworker):
         ext_id = 'FW' + first_name[0] + last_name[0] + str(i)
         cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
                        "('{uu_id}','{ext_id}', '{first_name}', '{last_name}', false)"
-                       .format(uu_id=create_uuid(), ext_id=ext_id, first_name=first_name, last_name=last_name))
+                       .format(uu_id=util.create_uuid(), ext_id=ext_id, first_name=first_name, last_name=last_name))
         hdss['field_workers'].append({'ext_id': ext_id, 'center': sample_coordinates()})
     cursor.close()
     open_hds_connection.commit()
@@ -268,8 +254,8 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
     field_worker = random.choice(hdss['field_workers'])
     cursor = open_hds_connection.cursor()
     #sample location on lowest level of location hierarchy
-    area = query_db_one(cursor, "SELECT extId FROM locationhierarchy "
-                                       "WHERE level_uuid = 'hierarchyLevelId5' ORDER BY RAND() LIMIT 1")['extId']
+    area = util.query_db_one(cursor, "SELECT extId FROM locationhierarchy "
+                                     "WHERE level_uuid = 'hierarchyLevelId5' ORDER BY RAND() LIMIT 1")['extId']
     #for now assume one location per social group
     location_index = len(hdss['social_groups']) + 1
     location_id = area + str(location_index).zfill(6)
@@ -418,10 +404,12 @@ def visit_social_group(social_group, round_number, start_date, end_date):
             date_of_migration = create_date_from_interval(start_date, str(date_of_visit))
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
-                                           field_worker['ext_id'],
-                                           ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
-                                           str(create_date(age, date_of_visit)),
+                                           field_worker['ext_id'], ind_id, 'UNK', 'UNK', first_name, middle_name,
+                                           last_name, gender, str(create_date(age, date_of_visit)),
                                            '1', str(date_of_migration), aggregate_url)
+            start_time, end_time = create_start_end_time(date_of_visit)
+            submission.submit_membership(start_time, ind_id, social_group['sg_id'], field_worker['ext_id'],
+                                         str(random.randint(2, 9)), str(date_of_migration), end_time, aggregate_url)
             social_group['individuals'].append({'ind_id': ind_id, 'gender': gender, 'last_seen': date_of_visit,
                                                 'status': 'present'})
 
@@ -429,10 +417,11 @@ def visit_social_group(social_group, round_number, start_date, end_date):
 def simulate_update(round):
     """Simulate an update round"""
     for social_group in hdss['social_groups']:
-        visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
-        if random.random() < inmigration_rate/2:
-            social_group_size = np.random.poisson(individuals_per_social_group)
-            create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+        if not 'no_update' in social_group:
+            visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
+            if random.random() < inmigration_rate/2:
+                social_group_size = np.random.poisson(individuals_per_social_group)
+                create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
 def submit_fixed_events(household):
@@ -443,7 +432,7 @@ def submit_fixed_events(household):
         social_group = next((item for item in hdss['social_groups'] if item['sg_id'] == household_id), None)
         #social_group = (item for item in hdss['social_groups'] if item['sg_id'] == household_id).next()
         if not social_group:
-            social_group = {'sg_id': household_id, 'individuals': [], 'locations': []}
+            social_group = {'sg_id': household_id, 'individuals': [], 'locations': [], 'no_update': True}
             hdss['social_groups'].append(social_group)
         if form['id'] == 'location_registration':
             location_id = form['fields'][3][1]
@@ -451,11 +440,18 @@ def submit_fixed_events(household):
             print(social_group)
             social_group['locations'].append(location)
         if form['id'] == 'membership':
-            individual = form['fields'][1][1]
+            individual_id = form['fields'][1][1]
             start_date = form['fields'][5][1]
             #TODO: properly deal with individuals
-            social_group['individuals'].append({'ind_id': individual, 'gender': 'F', 'last_seen': start_date,
+            social_group['individuals'].append({'ind_id': individual_id, 'gender': 'F', 'last_seen': start_date,
                                                 'status': 'present'})
+        if form['id'] == 'out_migration_registration' or form['id'] == 'death_registration':
+            individual_id = form['fields'][1][1]
+            individual = next((item for item in social_group['individuals'] if item['ind_id'] == individual_id), None)
+            if form['id'] == 'out_migration_registration':
+                individual['status'] == 'outside_hdss'
+            if form['id'] == 'death_registration':
+                individual['status'] == 'dead'
 
 
 def simulate_round(round):
@@ -463,7 +459,7 @@ def simulate_round(round):
     assumes number of events >> number of days per round"""
     cursor = open_hds_connection.cursor()
     cursor.execute("INSERT INTO round VALUES ('{uuid}','{endDate}','{remarks}','{roundNumber}',"
-                   "'{startDate}')".format(uuid=create_uuid(), **round))
+                   "'{startDate}')".format(uuid=util.create_uuid(), **round))
     if 'fixedEvents' in round:
         for household in round['fixedEvents']:
             submit_fixed_events(household)
@@ -481,8 +477,8 @@ def simulate_inter_round(round):
         number_unprocessed = 0
         processed_flag = config['odk_server']['processed_by_mirth_flag']
         for odk_form in config['odk_server']['forms']:
-            unprocessed = query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
-                                               .format(odk_form=odk_form, processed=processed_flag))['count']
+            unprocessed = util.query_db_one(cursor, "SELECT COUNT(*) AS count FROM {odk_form} WHERE {processed} = 0"
+                                            .format(odk_form=odk_form, processed=processed_flag))['count']
             if unprocessed > 0:
                 print(odk_form + " unprocessed: " + str(unprocessed))
                 number_unprocessed += unprocessed
@@ -511,3 +507,4 @@ if __name__ == "__main__":
     if 'pickle_out' in site['general']:
         with open(os.path.join(conf_dir, site['general']['pickle_out']), 'w') as site_file:
             pickle.dump(hdss, site_file)
+    print(hdss)

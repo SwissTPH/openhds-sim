@@ -9,7 +9,7 @@
         ],
         "start_date": "2012-05-30",
         "end_date": "2012-05-30",
-        "pop_size_baseline": 50,
+        "pop_size_baseline": 30,
         "birth_rate": 0.31,
         "death_rate": 0.25,
         "inmigration_rate": 0.25,
