@@ -182,6 +182,18 @@
                                 ["shortorlongstay", "3"]
                             ],
                             "id": "in_migration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T07:39:25.000+03"],
+                                ["individualId", "GND000001001"],
+                                ["householdId", "GND00000100"],
+                                ["fieldWorkerId", "data"],
+                                ["relationshipToGroupHead", "1"],
+                                ["startDate", "2013-09-30"],
+                                ["end", "2013-10-14T08:27:56.000+03"]
+                            ],
+                            "id": "membership"
                         }
                     ]
                 }
