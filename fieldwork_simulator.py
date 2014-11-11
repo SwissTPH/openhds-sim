@@ -372,7 +372,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
                                          social_group['locations'][0]['coordinates'],
                                          end_time, aggregate_url)
     for individual in social_group['individuals']:
-        logging.DEBUG(individual)
+        logging.debug(individual)
         #TODO: for now define death rate as per visit rate
         if individual['status'] == 'present' and random.random() < death_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
