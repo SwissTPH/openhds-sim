@@ -17,6 +17,7 @@ import argparse
 import submission
 import util
 import pickle
+import pprint
 
 conf_dir = 'conf'
 config = None
@@ -499,7 +500,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     init(args.site)
     for round in site['round']:
-        print(round)
+        pprint.pprint(round, width=1)
         simulate_round(round)
         simulate_inter_round(round)
     open_hds_connection.close()
@@ -507,4 +508,5 @@ if __name__ == "__main__":
     if 'pickle_out' in site['general']:
         with open(os.path.join(conf_dir, site['general']['pickle_out']), 'w') as site_file:
             pickle.dump(hdss, site_file)
-    print(hdss)
+    pprint.pprint(hdss, width=1)
+    print("Done")
