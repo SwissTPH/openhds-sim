@@ -375,8 +375,6 @@ def visit_social_group(social_group, round_number, start_date, end_date):
                                          end_time, aggregate_url)
     newly_inmigrated = []
     for individual in social_group['individuals']:
-        logging.debug(social_group['individuals'])
-        logging.debug(individual)
         #TODO: for now define death rate as per visit rate
         if individual['status'] == 'present' and random.random() < death_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
@@ -430,10 +428,11 @@ def simulate_update(round):
             visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
             if random.random() < inmigration_rate/2:
                 social_group_size = np.random.poisson(individuals_per_social_group)
-                social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'],
-                                                   round['endDate'], len(newly_inmigrated))
-                newly_inmigrated.append(social_group)
-    hdss['social_groups'].extend(newly_inmigrated)
+                #social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'],
+                #                                   round['endDate'], len(newly_inmigrated))
+                #newly_inmigrated.append(social_group)
+                #logging.debug(newly_inmigrated)
+    #hdss['social_groups'].extend(newly_inmigrated)
 
 
 def submit_fixed_events(household):
