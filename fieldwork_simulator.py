@@ -372,13 +372,14 @@ def visit_social_group(social_group, round_number, start_date, end_date):
                                          social_group['locations'][0]['coordinates'],
                                          end_time, aggregate_url)
     for individual in social_group['individuals']:
+        logging.DEBUG(individual)
         #TODO: for now define death rate as per visit rate
         if individual['status'] == 'present' and random.random() < death_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_death_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                  individual['gender'], '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
                                                  str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
-            individual['status'] == 'dead'
+            individual['status'] = 'dead'
             #TODO: dummy condition
             if "isheadofhousehold" == "True":
                 submission.submit_death_of_hoh_registration(start_time, individual['ind_id'], "TODO_NEW_HOH",
@@ -392,7 +393,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
             submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
                                                          visit_id, str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
                                                          'REC', end_time, aggregate_url)
-            individual['status'] == 'outside_hdss'
+            individual['status'] = 'outside_hdss'
         #half of the external inmigration events happen into social groups
         #TODO: for now assume all inmigrants are previously unknown
         if random.random() < inmigration_rate/2:
@@ -451,9 +452,9 @@ def submit_fixed_events(household):
             individual_id = form['fields'][1][1]
             individual = next((item for item in social_group['individuals'] if item['ind_id'] == individual_id), None)
             if form['id'] == 'out_migration_registration':
-                individual['status'] == 'outside_hdss'
+                individual['status'] = 'outside_hdss'
             if form['id'] == 'death_registration':
-                individual['status'] == 'dead'
+                individual['status'] = 'dead'
 
 
 def simulate_round(round):
@@ -502,9 +503,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
     init(args.site)
     if args.debug:
-        logging.basicConfig(filename='myapp.log', level=logging.DEBUG)
+        logging.basicConfig(filename='sim.log', level=logging.DEBUG)
     else:
-        logging.basicConfig(filename='myapp.log', level=logging.WARN)
+        logging.basicConfig(filename='sim.log', level=logging.WARN)
     for round in site['round']:
         pprint.pprint(round, width=1)
         simulate_round(round)
