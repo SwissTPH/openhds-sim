@@ -371,6 +371,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
                                          str(date_of_visit), social_group['individuals'][0]['ind_id'], '1', '0',
                                          social_group['locations'][0]['coordinates'],
                                          end_time, aggregate_url)
+    newly_inmigrated = []
     for individual in social_group['individuals']:
         logging.debug(social_group['individuals'])
         logging.debug(individual)
@@ -414,8 +415,9 @@ def visit_social_group(social_group, round_number, start_date, end_date):
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_membership(start_time, ind_id, social_group['sg_id'], field_worker['ext_id'],
                                          str(random.randint(2, 9)), str(date_of_migration), end_time, aggregate_url)
-            social_group['individuals'].append({'ind_id': ind_id, 'gender': gender, 'last_seen': date_of_visit,
-                                                'status': 'present'})
+            newly_inmigrated.append({'ind_id': ind_id, 'gender': gender, 'last_seen': date_of_visit,
+                                     'status': 'present'})
+    social_group['individuals'].extend(newly_inmigrated)
 
 
 def simulate_update(round):
