@@ -346,7 +346,7 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_relationship(start_time, id_of_head, ind_id, field_worker['ext_id'], '2',
                                            str(date_of_visit), end_time, aggregate_url)
-    hdss['social_groups'].append(social_group)
+    return social_group
 
 
 def simulate_baseline(round):
@@ -356,7 +356,8 @@ def simulate_baseline(round):
     popsize = 0
     while popsize < pop_size_baseline:
         social_group_size = np.random.poisson(individuals_per_social_group)
-        create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+        social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+        hdss['social_groups'].append(social_group)
         popsize += social_group_size
 
 
@@ -422,12 +423,16 @@ def visit_social_group(social_group, round_number, start_date, end_date):
 
 def simulate_update(round):
     """Simulate an update round"""
+    newly_inmigrated = []
     for social_group in hdss['social_groups']:
         if not 'no_update' in social_group:
             visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
             if random.random() < inmigration_rate/2:
                 social_group_size = np.random.poisson(individuals_per_social_group)
-                #create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+                social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'],
+                                                   round['endDate'])
+                newly_inmigrated.append(social_group)
+    hdss['social_groups'].extend(newly_inmigrated)
 
 
 def submit_fixed_events(household):
