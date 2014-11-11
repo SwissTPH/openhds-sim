@@ -399,7 +399,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
         #half of the external inmigration events happen into social groups
         #TODO: for now assume all inmigrants are previously unknown
         if random.random() < inmigration_rate/2:
-            next_id = int(social_group['individuals'][-1]['ind_id'][-3:]) + 1
+            next_id = int(social_group['individuals'][-1]['ind_id'][-3:]) + 1 + len(newly_inmigrated)
             ind_id = location_id + str(next_id).zfill(3)
             gender = sample_gender()
             first_name = create_first_name(gender)
@@ -427,7 +427,7 @@ def simulate_update(round):
             visit_social_group(social_group, str(round['roundNumber']), round['startDate'], round['endDate'])
             if random.random() < inmigration_rate/2:
                 social_group_size = np.random.poisson(individuals_per_social_group)
-                create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+                #create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
 
 
 def submit_fixed_events(household):
