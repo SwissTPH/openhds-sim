@@ -18,6 +18,7 @@ import submission
 import util
 import pickle
 import pprint
+import logging
 
 conf_dir = 'conf'
 config = None
@@ -496,9 +497,14 @@ def simulate_inter_round(round):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--site', help='Json file with site description, located in conf dir', required=True)
+    parser.add_argument('-d', '--debug', help='Debug logging', action='store_true', default=False)
     parser.set_defaults(truncate=False)
     args = parser.parse_args()
     init(args.site)
+    if args.debug:
+        logging.basicConfig(filename='myapp.log', level=logging.DEBUG)
+    else:
+        logging.basicConfig(filename='myapp.log', level=logging.WARN)
     for round in site['round']:
         pprint.pprint(round, width=1)
         simulate_round(round)

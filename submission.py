@@ -8,6 +8,8 @@ __status__ = "Alpha"
 from lxml import etree
 import urllib2
 import uuid
+import logging
+import pprint
 
 DEVICE_ID = "8c:77:12:5b:c1:3c"
 
@@ -54,6 +56,7 @@ def submit_from_dict(form_dict, aggregate_url):
         else:
             el = etree.SubElement(root, field[0])
             el.text = field[1]
+    logging.debug(form_dict)
     submit_data(etree.tostring(root), aggregate_url)
 
 
