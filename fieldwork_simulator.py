@@ -251,7 +251,7 @@ def create_location_hierarchy(location_hierarchy):
     open_hds_connection.commit()
 
 
-def create_social_group(social_group_size, round_number, start_date, end_date):
+def create_social_group(social_group_size, round_number, start_date, end_date, id_offset):
     date_of_visit = create_date_from_interval(start_date, end_date)
     field_worker = random.choice(hdss['field_workers'])
     cursor = open_hds_connection.cursor()
@@ -259,7 +259,7 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
     area = util.query_db_one(cursor, "SELECT extId FROM locationhierarchy "
                                      "WHERE level_uuid = 'hierarchyLevelId5' ORDER BY RAND() LIMIT 1")['extId']
     #for now assume one location per social group
-    location_index = len(hdss['social_groups']) + 1
+    location_index = len(hdss['social_groups']) + 1 + id_offset
     location_id = area + str(location_index).zfill(6)
     coordinates = sample_coordinates()
     visit_id = location_id + round_number.zfill(3)
@@ -288,7 +288,7 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
         submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
                                        field_worker['ext_id'],
                                        id_of_head, 'UNK', 'UNK', first_name, middle_name, last_name, gender_of_head,
-                                       str(create_date(sample_age(min_age_head_of_social_group), date_of_visit)),
+                                       str(create_date(sample_age(min_age_head_of_social_group), date_of_migration)),
                                        '1', str(date_of_migration), aggregate_url)
 
     #create a social group
@@ -330,7 +330,7 @@ def create_social_group(social_group_size, round_number, start_date, end_date):
             submission.submit_in_migration(start_time, end_time, 'EXTERNAL_INMIGRATION', location_id, visit_id,
                                            field_worker['ext_id'],
                                            ind_id, 'UNK', 'UNK', first_name, middle_name, last_name, gender,
-                                           str(create_date(age, date_of_visit)),
+                                           str(create_date(age, date_of_migration)),
                                            '1', str(date_of_migration), aggregate_url)
 
         #create memberships here, 2-9 for relationship
@@ -356,7 +356,8 @@ def simulate_baseline(round):
     popsize = 0
     while popsize < pop_size_baseline:
         social_group_size = np.random.poisson(individuals_per_social_group)
-        social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'], round['endDate'])
+        social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'],
+                                           round['endDate'], 0)
         hdss['social_groups'].append(social_group)
         popsize += social_group_size
 
@@ -430,7 +431,7 @@ def simulate_update(round):
             if random.random() < inmigration_rate/2:
                 social_group_size = np.random.poisson(individuals_per_social_group)
                 social_group = create_social_group(social_group_size, str(round['roundNumber']), round['startDate'],
-                                                   round['endDate'])
+                                                   round['endDate'], len(newly_inmigrated))
                 newly_inmigrated.append(social_group)
     hdss['social_groups'].extend(newly_inmigrated)
 
