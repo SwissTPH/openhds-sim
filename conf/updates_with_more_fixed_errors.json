@@ -1,0 +1,288 @@
+{
+    "general": {
+        "pickle_in": "baseline_with_fixed_events.pkl",
+        "area_polygon": [
+            ["47.56", "7.55"],
+            ["47.56", "7.64"],
+            ["47.53", "7.64"],
+            ["47.53", "7.55"]
+        ],
+        "start_date": "2012-05-30",
+        "end_date": "2012-05-30",
+        "pop_size_baseline": 30,
+        "birth_rate": 0.31,
+        "death_rate": 0.25,
+        "inmigration_rate": 0.25,
+        "outmigration_rate": 0.25,
+        "internal_migration_rate": 0.255,
+        "sex_ratio": 0.9
+    },
+    "relationship": {
+        "min_age_marriage": 12
+    },
+    "socialgroup": {
+        "locations_per_social_group": 2,
+        "individuals_per_social_group": 5,
+        "min_age_head": 15
+    },
+    "fieldworker": {
+        "number": 5,
+        "visits_per_day": 10,
+        "accuracy": {
+            "baseline": {
+                "rate": 0,
+                "max": 0
+            }
+        }
+    },
+    "locationhierarchy": {
+        "levels": [
+            {
+                "uuid": "hierarchy1",
+                "extId": "SUI",
+                "name": "Switzerland",
+                "level_uuid": "hierarchyLevelId1",
+                "parent_uuid": "hierarchy_root"
+            },
+            {
+                "uuid": "hierarchy2",
+                "extId": "NWS",
+                "name": "NW",
+                "level_uuid": "hierarchyLevelId2",
+                "parent_uuid": "hierarchy1"
+            },
+            {
+                "uuid": "hierarchy3",
+                "extId": "BSL",
+                "name": "Basel",
+                "level_uuid": "hierarchyLevelId3",
+                "parent_uuid": "hierarchy2"
+            },
+            {
+                "uuid": "hierarchy4",
+                "extId": "BSS",
+                "name": "Basel-Stadt",
+                "level_uuid": "hierarchyLevelId4",
+                "parent_uuid": "hierarchy3"
+            },
+            {
+                "uuid": "hierarchy5_1",
+                "extId": "ISE",
+                "name": "Iselin",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            },
+            {
+                "uuid": "hierarchy5_2",
+                "extId": "GTH",
+                "name": "Gotthelf",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            },
+            {
+                "uuid": "hierarchy5_3",
+                "extId": "BCL",
+                "name": "Bachletten",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            },
+            {
+                "uuid": "hierarchy5_4",
+                "extId": "GND",
+                "name": "Gundeldingen",
+                "level_uuid": "hierarchyLevelId5",
+                "parent_uuid": "hierarchy4"
+            }
+        ]
+    },
+    "round": [
+        {
+            "endDate": "2013-10-10",
+            "remarks": "First update",
+            "roundNumber": 1,
+            "startDate": "2013-08-14",
+            "fixedEvents": [
+                {
+                    "householdId": "GND00000100",
+                    "forms": [
+                        {
+                            "fields": [
+                                ["start", "2013-08-14T07:43:29.000+03"],
+                                ["visitId", "GND000001001"],
+                                ["fieldWorkerId", "data"],
+                                ["locationId", "GND000001"],
+                                ["roundNumber", "1"],
+                                ["visitDate", "2013-08-14"],
+                                ["intervieweeId", "GND000001001"],
+                                ["correctInterviewee", "1"],
+                                ["farmhouse", "0"],
+                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                                ["end", "2013-08-14T08:21:06.000+03"]
+                            ],
+                            "id": "visit_registration"
+                        },
+                        {
+
+                            "fields": [
+                                ["start", "2013-08-14T09:21:36.000+03"],
+                                ["individualId", "GND000001001"],
+                                ["fieldWorkerId", "data"],
+                                ["visitId", "GND000001001"],
+                                ["dateOfMigration", "2013-08-02"],
+                                ["nameOfDestination", "Elsewhere in Switzerland"],
+                                ["reasonForOutMigration", "MARITAL_CHANGE"],
+                                ["maritalChange", "REC"],
+                                ["end", "2013-08-14T09:55:14.000+03"]
+                            ],
+                            "id": "out_migration_registration"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "endDate": "2013-11-14",
+            "remarks": "Second update",
+            "roundNumber": 2,
+            "startDate": "2013-10-14",
+            "fixedEvents": [
+                {
+                    "householdId": "GND00000100",
+                    "forms": [
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T07:43:29.000+03"],
+                                ["visitId", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["locationId", "GND000001"],
+                                ["roundNumber", "2"],
+                                ["visitDate", "2013-10-14"],
+                                ["intervieweeId", "GND000001001"],
+                                ["correctInterviewee", "1"],
+                                ["farmhouse", "0"],
+                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                                ["end", "2013-10-14T08:21:06.000+03"]
+                            ],
+                            "id": "visit_registration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T10:17:48.000+03"],
+                                ["end", "2013-10-14T10:43:04.000+03"],
+                                ["migrationType", "INTERNAL_INMIGRATION"],
+                                ["locationId", "GND000001"],
+                                ["visitId", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["individualInfo", [
+                                    ["individualId", "GND000001001"]
+                                ]],
+                                ["dateOfMigration", "2013-09-30"],
+                                ["origin", "GND000001"],
+                                ["reason", "WORK"],
+                                ["shortorlongstay", "3"]
+                            ],
+                            "id": "in_migration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T07:39:25.000+03"],
+                                ["individualId", "GND000001001"],
+                                ["householdId", "GND00000100"],
+                                ["fieldWorkerId", "data"],
+                                ["relationshipToGroupHead", "1"],
+                                ["startDate", "2013-09-30"],
+                                ["end", "2013-10-14T08:27:56.000+03"]
+                            ],
+                            "id": "membership"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T10:17:48.000+03"],
+                                ["end", "2013-10-14T10:43:04.000+03"],
+                                ["migrationType", "EXTERNAL_INMIGRATION"],
+                                ["locationId", "GND000001"],
+                                ["visitId", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["individualInfo", [
+                                    ["individualId", "GND000001002"],
+                                    ["motherId", "UNK"],
+                                    ["fatherId", "UNK"],
+                                    ["firstName", "Sara"],
+                                    ["middleName", "Eleonora"],
+                                    ["lastName", "Kaufmann"],
+                                    ["gender", "F"],
+                                    ["dateOfBirth", "1972-07-14"],
+                                    ["partialDate", "1"]
+                                ]],
+                                ["dateOfMigration", "2013-09-30"],
+                                ["origin", "GND000001"],
+                                ["reason", "WORK"],
+                                ["shortorlongstay", "3"]
+                            ],
+                            "id": "in_migration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-14T07:39:25.000+03"],
+                                ["individualId", "GND000001002"],
+                                ["householdId", "GND00000100"],
+                                ["fieldWorkerId", "data"],
+                                ["relationshipToGroupHead", "2"],
+                                ["startDate", "2013-09-30"],
+                                ["end", "2013-10-14T08:27:56.000+03"]
+                            ],
+                            "id": "membership"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "endDate": "2014-11-12",
+            "remarks": "Third update",
+            "roundNumber": 3,
+            "startDate": "2014-10-14",
+            "fixedEvents": [
+                {
+                    "householdId": "GND00000100",
+                    "forms": [
+                        {
+                            "fields": [
+                                ["start", "2014-10-14T07:43:29.000+03"],
+                                ["visitId", "GND000001003"],
+                                ["fieldWorkerId", "data"],
+                                ["locationId", "GND000001"],
+                                ["roundNumber", "3"],
+                                ["visitDate", "2014-10-14"],
+                                ["intervieweeId", "GND000001001"],
+                                ["correctInterviewee", "1"],
+                                ["farmhouse", "0"],
+                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                                ["end", "2014-10-14T08:21:06.000+03"]
+                            ],
+                            "id": "visit_registration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2014-10-14T10:42:43.000+03"],
+                                ["individualId", "GND000001001"],
+                                ["fieldWorkerId", "data"],
+                                ["gender", "F"],
+                                ["deathWithinDSS", "1"],
+                                ["deathVillage", "VILLAGE"],
+                                ["haveDeathCertificate", "1"],
+                                ["visitId", "GND000001003"],
+                                ["causeOfDeath", "UNKNOWN"],
+                                ["dateOfDeath", "2014-09-10"],
+                                ["placeOfDeath", "OTHER"],
+                                ["placeOfDeathOther", "OTHERPLACE"],
+                                ["end", "2014-10-14T11:26:38.000+03"]
+                            ],
+                            "id": "death_registration"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
