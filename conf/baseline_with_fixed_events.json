@@ -111,8 +111,8 @@
                                 ["hierarchyId", "GND"],
                                 ["fieldWorkerId", "data"],
                                 ["locationId", "GND000001"],
-                                ["locationName", "Location name"],
-                                ["tenCellLeader", "Ten cell leader"],
+                                ["locationName", "Alan"],
+                                ["tenCellLeader", "Unknown"],
                                 ["locationType", "RUR"],
                                 ["geopoint", "47.5359532057 7.58837010185 0 0"],
                                 ["end", "2013-03-29T12:05:36.000+03"]
@@ -132,10 +132,10 @@
                                     ["individualId", "GND000001001"],
                                     ["motherId", "UNK"],
                                     ["fatherId", "UNK"],
-                                    ["firstName", "Sara"],
-                                    ["middleName", "Eleonora"],
+                                    ["firstName", "Alain"],
+                                    ["middleName", "Samuel"],
                                     ["lastName", "Kaufmann"],
-                                    ["gender", "F"],
+                                    ["gender", "M"],
                                     ["dateOfBirth", "1972-07-14"],
                                     ["partialDate", "1"]
                                 ]],
@@ -172,11 +172,61 @@
                                 ["end", "2013-03-29T08:27:56.000+03"]
                             ],
                             "id": "membership"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-03-29T11:37:57.000+03"],
+                                ["end", "2013-03-29T11:07:57.000+03"],
+                                ["migrationType", "BASELINE"],
+                                ["locationId", "GND000001"],
+                                ["visitId", "GND000001000"],
+                                ["fieldWorkerId", "data"],
+                                ["individualInfo", [
+                                    ["individualId", "GND000001002"],
+                                    ["motherId", "UNK"],
+                                    ["fatherId", "UNK"],
+                                    ["firstName", "Sara"],
+                                    ["middleName", "Eleonora"],
+                                    ["lastName", "Kaufmann"],
+                                    ["gender", "F"],
+                                    ["dateOfBirth", "1974-07-14"],
+                                    ["partialDate", "1"]
+                                ]],
+                                ["dateOfMigration", "2013-03-29"],
+                                ["warning", ""],
+                                ["visitDate", "2013-03-29"],
+                                ["majo4mo", "yes"],
+                                ["spelasni", "yes"]
+                            ],
+                            "id": "baseline"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-03-29T08:39:25.000+03"],
+                                ["individualId", "GND000001002"],
+                                ["householdId", "GND00000100"],
+                                ["fieldWorkerId", "data"],
+                                ["relationshipToGroupHead", "2"],
+                                ["startDate", "2013-03-29"],
+                                ["end", "2013-03-29T09:27:56.000+03"]
+                            ],
+                            "id": "membership"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-03-29T08:39:25.000+03"],
+                                ["individualA", "GND000001001"],
+                                ["individualB", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["relationshipType", "2"],
+                                ["startDate", "2013-03-29"],
+                                ["end", "2013-03-29T09:27:56.000+03"]
+                            ],
+                            "id": "relationship"
                         }
                     ]
                 }
             ]
-
         }
     ]
 }
