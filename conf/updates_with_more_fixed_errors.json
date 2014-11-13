@@ -345,7 +345,7 @@
                                 ["haveDeathCertificate", "1"],
                                 ["visitId", "GND000001003"],
                                 ["causeOfDeath", "UNKNOWN"],
-                                ["dateOfDeath", "2014-09-10"],
+                                ["dateOfDeath", "2014-09-12"],
                                 ["placeOfDeath", "OTHER"],
                                 ["placeOfDeathOther", "OTHERPLACE"],
                                 ["end", "2014-10-16T11:26:38.000+03"]
