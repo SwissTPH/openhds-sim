@@ -10,11 +10,11 @@
         "start_date": "2012-05-30",
         "end_date": "2012-05-30",
         "pop_size_baseline": 30,
-        "birth_rate": 0.31,
-        "death_rate": 0.25,
-        "inmigration_rate": 0.25,
-        "outmigration_rate": 0.25,
-        "internal_migration_rate": 0.255,
+        "birth_rate": 0.05,
+        "death_rate": 0.05,
+        "inmigration_rate": 0.05,
+        "outmigration_rate": 0.05,
+        "internal_migration_rate": 0.0255,
         "sex_ratio": 0.9
     },
     "relationship": {
