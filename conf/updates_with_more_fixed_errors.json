@@ -135,37 +135,6 @@
                                 ["end", "2013-08-14T09:55:14.000+03"]
                             ],
                             "id": "out_migration_registration"
-                        },
-                        {
-                            "fields": [
-                                ["start", "2013-08-16T07:43:29.000+03"],
-                                ["visitId", "GND000001001"],
-                                ["fieldWorkerId", "data2"],
-                                ["locationId", "GND000001"],
-                                ["roundNumber", "1"],
-                                ["visitDate", "2013-08-16"],
-                                ["intervieweeId", "GND000001001"],
-                                ["correctInterviewee", "1"],
-                                ["farmhouse", "0"],
-                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
-                                ["end", "2013-08-16T08:21:06.000+03"]
-                            ],
-                            "id": "visit_registration"
-                        },
-                        {
-
-                            "fields": [
-                                ["start", "2013-08-16T09:21:36.000+03"],
-                                ["individualId", "GND000001001"],
-                                ["fieldWorkerId", "data"],
-                                ["visitId", "GND000001001"],
-                                ["dateOfMigration", "2013-08-02"],
-                                ["nameOfDestination", "Elsewhere in Switzerland"],
-                                ["reasonForOutMigration", "MARITAL_CHANGE"],
-                                ["maritalChange", "REC"],
-                                ["end", "2013-08-16T09:55:14.000+03"]
-                            ],
-                            "id": "out_migration_registration"
                         }
                     ]
                 }
@@ -301,6 +270,40 @@
                                 ["end", "2013-10-14T08:27:56.000+03"]
                             ],
                             "id": "membership"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-16T07:43:29.000+03"],
+                                ["visitId", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["locationId", "GND000001"],
+                                ["roundNumber", "2"],
+                                ["visitDate", "2013-10-16"],
+                                ["intervieweeId", "GND000001001"],
+                                ["correctInterviewee", "1"],
+                                ["farmhouse", "0"],
+                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                                ["end", "2013-10-16T08:21:06.000+03"]
+                            ],
+                            "id": "visit_registration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2013-10-16T10:17:48.000+03"],
+                                ["end", "2013-10-16T10:43:04.000+03"],
+                                ["migrationType", "INTERNAL_INMIGRATION"],
+                                ["locationId", "GND000001"],
+                                ["visitId", "GND000001002"],
+                                ["fieldWorkerId", "data"],
+                                ["individualInfo", [
+                                    ["individualId", "GND000001001"]
+                                ]],
+                                ["dateOfMigration", "2013-09-30"],
+                                ["origin", "GND000001"],
+                                ["reason", "WORK"],
+                                ["shortorlongstay", "3"]
+                            ],
+                            "id": "in_migration"
                         }
                     ]
                 }
