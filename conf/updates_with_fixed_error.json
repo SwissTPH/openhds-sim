@@ -98,8 +98,8 @@
     "round": [
         {
             "endDate": "2013-10-10",
-            "remarks": "Second update",
-            "roundNumber": 2,
+            "remarks": "First update",
+            "roundNumber": 1,
             "startDate": "2013-08-14",
             "fixedEvents": [
                 {
@@ -142,8 +142,8 @@
         },
         {
             "endDate": "2013-11-14",
-            "remarks": "Third update",
-            "roundNumber": 3,
+            "remarks": "Second update",
+            "roundNumber": 2,
             "startDate": "2013-10-14",
             "fixedEvents": [
                 {
