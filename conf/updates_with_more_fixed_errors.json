@@ -276,7 +276,7 @@
             ]
         },
         {
-            "endDate": "2014-11-12",
+            "endDate": "2014-11-01",
             "remarks": "Third update",
             "roundNumber": 3,
             "startDate": "2014-10-14",
@@ -317,38 +317,51 @@
                                 ["end", "2014-10-14T11:26:38.000+03"]
                             ],
                             "id": "death_registration"
-                        },
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "endDate": "2014-11-13",
+            "remarks": "Fourth update",
+            "roundNumber": 4,
+            "startDate": "2014-10-02",
+            "fixedEvents": [
+                {
+                    "householdId": "GND00000100",
+                    "forms": [
                         {
                             "fields": [
-                                ["start", "2014-10-16T07:43:29.000+03"],
+                                ["start", "2014-11-10T07:43:29.000+03"],
                                 ["visitId", "GND000001003"],
                                 ["fieldWorkerId", "data2"],
                                 ["locationId", "GND000001"],
-                                ["roundNumber", "3"],
-                                ["visitDate", "2016-10-14"],
+                                ["roundNumber", "4"],
+                                ["visitDate", "2014-11-10"],
                                 ["intervieweeId", "GND000001001"],
                                 ["correctInterviewee", "1"],
                                 ["farmhouse", "0"],
                                 ["coordinates", "47.5317248916 7.60917682221 0 0"],
-                                ["end", "2014-10-16T08:21:06.000+03"]
+                                ["end", "2014-11-10T08:21:06.000+03"]
                             ],
                             "id": "visit_registration"
                         },
                         {
                             "fields": [
-                                ["start", "2014-10-16T10:42:43.000+03"],
+                                ["start", "2014-11-10T10:42:43.000+03"],
                                 ["individualId", "GND000001001"],
                                 ["fieldWorkerId", "data2"],
                                 ["gender", "F"],
                                 ["deathWithinDSS", "1"],
                                 ["deathVillage", "VILLAGE"],
                                 ["haveDeathCertificate", "1"],
-                                ["visitId", "GND000001003"],
+                                ["visitId", "GND000001004"],
                                 ["causeOfDeath", "UNKNOWN"],
-                                ["dateOfDeath", "2014-09-12"],
+                                ["dateOfDeath", "2014-09-10"],
                                 ["placeOfDeath", "OTHER"],
                                 ["placeOfDeathOther", "OTHERPLACE"],
-                                ["end", "2014-10-16T11:26:38.000+03"]
+                                ["end", "2014-11-10T11:26:38.000+03"]
                             ],
                             "id": "death_registration"
                         }
