@@ -227,6 +227,8 @@ def create_fws(fieldworker):
     #first add a default fieldworker named Data Data, username data, for use in a the standard tablet emulator
     cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
                    "('{uu_id}','data', 'Data', 'Data', false)".format(uu_id=util.create_uuid()))
+    cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
+                   "('{uu_id}','data2', 'Data2', 'Data2', false)".format(uu_id=util.create_uuid()))
     number = fieldworker['number']
     for i in range(1, number + 1):
         first_name = create_first_name(sample_gender())
