@@ -273,7 +273,7 @@
                                 ["visitId", "GND000001002"],
                                 ["fieldWorkerId", "data"],
                                 ["individualInfo", [
-                                    ["individualId", "GND000001002"],
+                                    ["individualId", "GND000001004"],
                                     ["motherId", "UNK"],
                                     ["fatherId", "UNK"],
                                     ["firstName", "Sara"],
@@ -293,7 +293,7 @@
                         {
                             "fields": [
                                 ["start", "2013-10-14T07:39:25.000+03"],
-                                ["individualId", "GND000001002"],
+                                ["individualId", "GND000001004"],
                                 ["householdId", "GND00000100"],
                                 ["fieldWorkerId", "data"],
                                 ["relationshipToGroupHead", "2"],

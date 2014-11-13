@@ -111,7 +111,7 @@
                                 ["hierarchyId", "GND"],
                                 ["fieldWorkerId", "data"],
                                 ["locationId", "GND000001"],
-                                ["locationName", "Alan"],
+                                ["locationName", "Alain"],
                                 ["tenCellLeader", "Unknown"],
                                 ["locationType", "RUR"],
                                 ["geopoint", "47.5359532057 7.58837010185 0 0"],
