@@ -270,40 +270,6 @@
                                 ["end", "2013-10-14T08:27:56.000+03"]
                             ],
                             "id": "membership"
-                        },
-                        {
-                            "fields": [
-                                ["start", "2013-10-16T07:43:29.000+03"],
-                                ["visitId", "GND000001002"],
-                                ["fieldWorkerId", "data"],
-                                ["locationId", "GND000001"],
-                                ["roundNumber", "2"],
-                                ["visitDate", "2013-10-16"],
-                                ["intervieweeId", "GND000001001"],
-                                ["correctInterviewee", "1"],
-                                ["farmhouse", "0"],
-                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
-                                ["end", "2013-10-16T08:21:06.000+03"]
-                            ],
-                            "id": "visit_registration"
-                        },
-                        {
-                            "fields": [
-                                ["start", "2013-10-16T10:17:48.000+03"],
-                                ["end", "2013-10-16T10:43:04.000+03"],
-                                ["migrationType", "INTERNAL_INMIGRATION"],
-                                ["locationId", "GND000001"],
-                                ["visitId", "GND000001002"],
-                                ["fieldWorkerId", "data"],
-                                ["individualInfo", [
-                                    ["individualId", "GND000001001"]
-                                ]],
-                                ["dateOfMigration", "2013-09-30"],
-                                ["origin", "GND000001"],
-                                ["reason", "WORK"],
-                                ["shortorlongstay", "3"]
-                            ],
-                            "id": "in_migration"
                         }
                     ]
                 }
@@ -349,6 +315,40 @@
                                 ["placeOfDeath", "OTHER"],
                                 ["placeOfDeathOther", "OTHERPLACE"],
                                 ["end", "2014-10-14T11:26:38.000+03"]
+                            ],
+                            "id": "death_registration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2014-10-16T07:43:29.000+03"],
+                                ["visitId", "GND000001003"],
+                                ["fieldWorkerId", "data2"],
+                                ["locationId", "GND000001"],
+                                ["roundNumber", "3"],
+                                ["visitDate", "2016-10-14"],
+                                ["intervieweeId", "GND000001001"],
+                                ["correctInterviewee", "1"],
+                                ["farmhouse", "0"],
+                                ["coordinates", "47.5317248916 7.60917682221 0 0"],
+                                ["end", "2014-10-16T08:21:06.000+03"]
+                            ],
+                            "id": "visit_registration"
+                        },
+                        {
+                            "fields": [
+                                ["start", "2014-10-16T10:42:43.000+03"],
+                                ["individualId", "GND000001001"],
+                                ["fieldWorkerId", "data2"],
+                                ["gender", "F"],
+                                ["deathWithinDSS", "1"],
+                                ["deathVillage", "VILLAGE"],
+                                ["haveDeathCertificate", "1"],
+                                ["visitId", "GND000001003"],
+                                ["causeOfDeath", "UNKNOWN"],
+                                ["dateOfDeath", "2014-09-10"],
+                                ["placeOfDeath", "OTHER"],
+                                ["placeOfDeathOther", "OTHERPLACE"],
+                                ["end", "2014-10-16T11:26:38.000+03"]
                             ],
                             "id": "death_registration"
                         }
