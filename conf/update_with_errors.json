@@ -9,10 +9,10 @@
         "start_date": "2012-05-30",
         "end_date": "2012-05-30",
         "pop_size_baseline": 300,
-        "birth_rate": 0.11,
-        "death_rate": 0.035,
-        "inmigration_rate": 0.25,
-        "outmigration_rate": 0.25,
+        "birth_rate": 0.05,
+        "death_rate": 0.03,
+        "inmigration_rate": 0.05,
+        "outmigration_rate": 0.05,
         "internal_migration_rate": 0.255,
         "sex_ratio": 0.9
     },
@@ -29,8 +29,8 @@
         "visits_per_day": 10,
         "accuracy": {
             "baseline": {
-                "rate": 0,
-                "max": 0
+                "rate": 0.05,
+                "max": 20
             }
         }
     },
@@ -96,10 +96,10 @@
     },
     "round": [
         {
-            "endDate": "2013-06-14",
-            "remarks": "Baseline",
-            "roundNumber": 0,
-            "startDate": "2013-03-15"
+            "endDate": "2014-11-14",
+            "remarks": "Update",
+            "roundNumber": 1,
+            "startDate": "2014-09-15"
         }
     ]
 }

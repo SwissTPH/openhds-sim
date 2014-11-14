@@ -47,7 +47,7 @@
             {
                 "uuid": "hierarchy2",
                 "extId": "NWS",
-                "name": "NW",
+                "name": "Nordwestschweiz",
                 "level_uuid": "hierarchyLevelId2",
                 "parent_uuid": "hierarchy1"
             },
