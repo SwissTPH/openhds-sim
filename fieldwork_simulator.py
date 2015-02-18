@@ -225,23 +225,24 @@ def create_fws(fieldworker):
     """Create fieldworkers in openhds"""
     cursor = open_hds_connection.cursor()
     #first add a default fieldworker named Data Data, username data, for use in a the standard tablet emulator
-    cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
-                   "('{uu_id}','data', 'Data', 'Data', false)".format(uu_id=util.create_uuid()))
-    cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
-                   "('{uu_id}','data2', 'Data2', 'Data2', false)".format(uu_id=util.create_uuid()))
+    cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
+                   "('{uu_id}','data', 'Data', 'Data', false,"
+                   "'$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
+    cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
+                   "('{uu_id}','data2', 'Data2', 'Data2', false,"
+                   "'$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
     number = fieldworker['number']
     for i in range(1, number + 1):
         first_name = create_first_name(sample_gender())
         last_name = create_last_name()
         #TODO: i is not what should be used according to the naming convention
         ext_id = 'FW' + first_name[0] + last_name[0] + str(i)
-        cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted) VALUES "
-                       "('{uu_id}','{ext_id}', '{first_name}', '{last_name}', false)"
+        cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
+                       "('{uu_id}','{ext_id}', '{first_name}', '{last_name}', false, '$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')"
                        .format(uu_id=util.create_uuid(), ext_id=ext_id, first_name=first_name, last_name=last_name))
         hdss['field_workers'].append({'ext_id': ext_id, 'center': sample_coordinates()})
     cursor.close()
     open_hds_connection.commit()
-
 
 def create_location_hierarchy(location_hierarchy):
     """Create the location hierarchy"""
@@ -473,6 +474,15 @@ def simulate_round(round):
     cursor = open_hds_connection.cursor()
     cursor.execute("INSERT INTO round VALUES ('{uuid}','{endDate}','{remarks}','{roundNumber}',"
                    "'{startDate}')".format(uuid=util.create_uuid(), **round))
+    cursor = odk_connection.cursor()
+    if round['remarks'] == 'Baseline':
+        #enable mirth baseline channels
+        cursor.execute("UPDATE SCENARIO SET FLG_SCENARIO=0")
+        print("set 0")
+    else:
+        #enable mirth update channels
+        cursor.execute("UPDATE SCENARIO SET FLG_SCENARIO=1")
+        print("set 1")
     if 'fixedEvents' in round:
         for household in round['fixedEvents']:
             submit_fixed_events(household)
@@ -499,9 +509,6 @@ def simulate_inter_round(round):
             waiting_for_mirth = False
         else:
             print("Still waiting for Mirth...")
-            if round['remarks'] != 'Baseline':
-                print("Make sure you have your Baseline channels stopped, and your Update channels started")
-            print("")
             time.sleep(3)
 
 
