@@ -11,7 +11,7 @@ import uuid
 import logging
 import pprint
 
-DEVICE_ID = "8c:77:12:5b:c1:3c"
+DEVICE_ID = "8d:77:12:5b:c1:3c"
 
 
 def submit_data(data, url):
