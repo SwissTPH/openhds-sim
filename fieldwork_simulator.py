@@ -449,18 +449,21 @@ def submit_fixed_events(household):
             social_group = {'sg_id': household_id, 'individuals': [], 'locations': [], 'no_update': True}
             hdss['social_groups'].append(social_group)
         if form['id'] == 'location_registration':
-            location_id = form['fields'][3][1]
-            location = {'location_id': location_id, 'coordinates': form['fields'][7][1]}
+            location_id = form['fields'][1][1][2][1]
+            print("->location_id id: " + location_id)		
+            location = {'location_id': location_id, 'coordinates': form['fields'][5][1]}
             print(social_group)
             social_group['locations'].append(location)
         if form['id'] == 'membership':
-            individual_id = form['fields'][1][1]
-            start_date = form['fields'][5][1]
+            individual_id = form['fields'][1][1][0][1]
+            print("->individual_id id: " + individual_id)	
+            start_date = form['fields'][3][1]
+            print("->start_date: " + start_date)			
             #TODO: properly deal with individuals
             social_group['individuals'].append({'ind_id': individual_id, 'gender': 'F', 'last_seen': start_date,
                                                 'status': 'present'})
         if form['id'] == 'out_migration_registration' or form['id'] == 'death_registration':
-            individual_id = form['fields'][1][1]
+            individual_id = form['fields'][1][1][0][1]
             individual = next((item for item in social_group['individuals'] if item['ind_id'] == individual_id), None)
             if form['id'] == 'out_migration_registration':
                 individual['status'] = 'outside_hdss'
