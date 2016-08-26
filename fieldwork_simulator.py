@@ -124,6 +124,9 @@ def clean_db():
     cursor = odk_connection.cursor()
     for form in config['odk_server']['forms']:
         cursor.execute("TRUNCATE " + form)
+    cursor.execute("CREATE TABLE IF NOT EXISTS `SCENARIO` "
+                   "(`FLG_SCENARIO` int(11) NOT NULL DEFAULT '0') "
+                   "ENGINE=InnoDB DEFAULT CHARSET=latin1;")
     cursor.close()
     odk_connection.commit()
 
@@ -266,7 +269,6 @@ def create_social_group(social_group_size, round_number, start_date, end_date, i
     location_id = area + str(location_index).zfill(6)
     coordinates = sample_coordinates()
     visit_id = location_id + round_number.zfill(3)
-    ind_id = ''
     sg_id = location_id + '00'
     #first create the social group head
     id_of_head = location_id + '1'.zfill(3)
@@ -356,6 +358,7 @@ def simulate_baseline(round):
     """Simulate a census. Use the population size at start. Sample random locations.
     Use inmigration for all individuals.
     Don't fill a visit form."""
+    global individuals_per_social_group
     popsize = 0
     while popsize < pop_size_baseline:
         social_group_size = np.random.poisson(individuals_per_social_group)

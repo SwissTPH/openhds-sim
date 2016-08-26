@@ -9,7 +9,6 @@ from lxml import etree
 import urllib2
 import uuid
 import logging
-import pprint
 
 DEVICE_ID = "8d:77:12:5b:c1:3c"
 
@@ -64,10 +63,11 @@ def submit_baseline_individual(start, end, location_id, visit_id, fieldworker_id
                                first_name, middle_name, last_name, gender, date_of_birth, partial_date,
                                date_of_visit, aggregate_url):
     """Register an individual during baseline"""
-    #dateOfMigration is date of  visit by definition
+    # dateOfMigration is date of  visit by definition
     form_dict = {"id": "baseline",
-                 "fields": [["start", start], ["end", end], ["migrationType", "BASELINE"], ["locationId", location_id],
-                            ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
+                 "fields": [["start", start], ["end", end], ["deviceid", DEVICE_ID],
+                            ["openhds", [["migrationType", "BASELINE"], ["locationId", location_id],
+                                         ["visitId", visit_id], ["fieldWorkerId", fieldworker_id]]],
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
                                                 ["fatherId", father_id], ["firstName", first_name],
                                                 ["middleName", middle_name], ["lastName", last_name],
@@ -108,7 +108,8 @@ def submit_death_registration(start, individual_id, field_worker_id, gender, dea
                             ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
 
-#TODO:
+
+# TODO:
 # <?xml version='1.0' ?>
 # <DEATHTOHOH id="DEATHTOHOH">
 #     <householdId>LI2000000</householdId>
@@ -158,10 +159,11 @@ def submit_death_of_hoh_registration(start, individual_id, new_hoh_id, field_wor
 def submit_location_registration(start, hierarchy_id, fieldworker_id, location_id, location_name, ten_cell_leader,
                                  location_type, geopoint, end, aggregate_url):
     form_dict = {"id": "location_registration",
-                 "fields": [["start", start], ["hierarchyId", hierarchy_id], ["fieldWorkerId", fieldworker_id],
-                            ["locationId", location_id], ["locationName", location_name],
-                            ["tenCellLeader", ten_cell_leader], ["locationType", location_type], ["geopoint", geopoint],
-                            ["end", end]]}
+                 "fields": [["start", start], ["end", end],
+                            ["openhds", [["fieldWorkerId", fieldworker_id], ["hierarchyId", hierarchy_id],
+                            ["locationId", location_id]]],
+                            ["locationName", location_name], ["tenCellLeader", ten_cell_leader],
+                            ["locationType", location_type], ["geopoint", geopoint]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
@@ -237,8 +239,10 @@ def submit_relationship(start, individual_a, individual_b, fieldworker_id, relat
 def submit_social_group_registration(start, household_id, individual_id, field_worker_id, group_name, social_group_type,
                                      end, aggregate_url):
     form_dict = {"id": "social_group_registration", "fields": [["start", start], ["householdId", household_id],
-                 ["individualId", individual_id], ["fieldWorkerId", field_worker_id], ["groupName", group_name],
-                 ["socialGroupType", social_group_type], ["end", end]]}
+                                                               ["individualId", individual_id],
+                                                               ["fieldWorkerId", field_worker_id],
+                                                               ["groupName", group_name],
+                                                               ["socialGroupType", social_group_type], ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
@@ -250,4 +254,3 @@ def submit_visit_registration(start, visit_id, field_worker_id, location_id, rou
                             ["intervieweeId", interviewee_id], ["correctInterviewee", correct_interviewee],
                             ["farmhouse", farmhouse], ["coordinates", coordinates], ["end", end]]}
     return submit_from_dict(form_dict, aggregate_url)
-

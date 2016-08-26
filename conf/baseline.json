@@ -8,7 +8,7 @@
             ["47.53", "7.55"]],
         "start_date": "2012-05-30",
         "end_date": "2012-05-30",
-        "pop_size_baseline": 100,
+        "pop_size_baseline": 10,
         "birth_rate": 0.11,
         "death_rate": 0.035,
         "inmigration_rate": 0.25,
