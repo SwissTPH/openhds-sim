@@ -100,16 +100,17 @@ def init(site_config):
     outmigration_rate = site['general']['outmigration_rate']
     internal_migration_rate = site['general']['internal_migration_rate']
     #either load population from pickle, or re-init db and create hdss dictionary
-    if not 'pickle_in' in site['general']:
-        clean_db()
-        create_fws(site['fieldworker'])
-        create_location_hierarchy(site['locationhierarchy'])
-    else:
+    if 'pickle_in' in site['general']:
+        clean_odk_db()
         with open(os.path.join(conf_dir, site['general']['pickle_in'])) as f:
             hdss = pickle.load(f)
+    else:
+        clean_dbs()
+        create_fws(site['fieldworker'])
+        create_location_hierarchy(site['locationhierarchy'])
 
 
-def clean_db():
+def clean_dbs():
     """Remove any data from openhds that is not in 'openhds-required-data'"""
     cursor = open_hds_connection.cursor()
     cursor.execute("SET FOREIGN_KEY_CHECKS=0")
@@ -121,6 +122,10 @@ def clean_db():
     cursor.execute("SET FOREIGN_KEY_CHECKS=1")
     cursor.close()
     open_hds_connection.commit()
+    clean_odk_db()
+
+
+def clean_odk_db():
     cursor = odk_connection.cursor()
     for form in config['odk_server']['forms']:
         cursor.execute("TRUNCATE " + form)
@@ -399,8 +404,10 @@ def visit_social_group(social_group, round_number, start_date, end_date):
         if individual['status'] == 'present' and random.random() < outmigration_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
             submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
-                                                         visit_id, str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
+                                                         visit_id, 'notknown', 'notknown', str(date_of_visit),
+                                                         'DESTINATION', 'MARITAL_CHANGE',
                                                          'REC', end_time, aggregate_url)
+            print(individual)
             individual['status'] = 'outside_hdss'
         #half of the external inmigration events happen into social groups
         #TODO: for now assume all inmigrants are previously unknown
