@@ -389,9 +389,9 @@ def visit_social_group(social_group, round_number, start_date, end_date):
         #TODO: for now define death rate as per visit rate
         if individual['status'] == 'present' and random.random() < death_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
-            submission.submit_death_registration(start_time, individual['ind_id'], field_worker['ext_id'],
-                                                 individual['gender'], '1', 'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
-                                                 str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time, aggregate_url)
+            submission.submit_death_registration(start_time, individual['ind_id'], 'first', 'last',
+                                                 field_worker['ext_id'], visit_id, str(date_of_visit), 'OTHER',
+                                                 'OTHERPLACE', end_time, aggregate_url)
             individual['status'] = 'dead'
             #TODO: dummy condition
             if "isheadofhousehold" == "True":

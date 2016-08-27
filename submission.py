@@ -84,8 +84,9 @@ def submit_in_migration(start, end, migration_type, location_id, visit_id, field
                         date_of_migration, aggregate_url):
     """Register an inmigration"""
     form_dict = {"id": "in_migration",
-                 "fields": [["start", start], ["end", end], ["migrationType", migration_type],
-                            ["locationId", location_id], ["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
+                 "fields": [["start", start], ["end", end],
+                            ["openhds", [["visitId", visit_id], ["fieldWorkerId", fieldworker_id],
+                                        ["migrationType", migration_type], ["locationId", location_id]]],
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
                                                 ["fatherId", father_id], ["firstName", first_name],
                                                 ["middleName", middle_name], ["lastName", last_name],
@@ -97,30 +98,35 @@ def submit_in_migration(start, end, migration_type, location_id, visit_id, field
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_death_registration(start, individual_id, field_worker_id, gender, death_within_dss, death_village,
-                              have_death_certificate, visit_id, cause_of_death, date_of_death, place_of_death,
-                              place_of_death_other, end, aggregate_url):
+def submit_death_registration(start, individual_id, first_name, last_name, field_worker_id, visit_id, date_of_death,
+                              place_of_death, place_of_death_other, end, aggregate_url):
     form_dict = {"id": "death_registration",
-                 "fields": [["start", start], ["individualId", individual_id], ["fieldWorkerId", field_worker_id],
-                            ["gender", gender], ["deathWithinDSS", death_within_dss], ["deathVillage", death_village],
-                            ["haveDeathCertificate", have_death_certificate], ["visitId", visit_id],
-                            ["causeOfDeath", cause_of_death], ["dateOfDeath", date_of_death],
+                 "fields": [["start", start], ["end", end],
+                            ["openhds", [["fieldWorkerId", field_worker_id], ["visitId", visit_id],
+                                         ["individualId", individual_id], ["firstName", first_name],
+                                         ["lastName", last_name]]],
+                            ["dateOfDeath", date_of_death], ["diagnoseddeath", ''], ["whom", ''],
+                            ["causeofdeathdiagnosed", ''], ["causofdeathnotdiagnosed", ''],
                             ["placeOfDeath", place_of_death], ["placeOfDeathOther", place_of_death_other],
-                            ["end", end]]}
+                            ["causeOfDeath", '']
+                            ]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_death_of_hoh_registration(start, individual_id, new_hoh_id, field_worker_id, gender, death_within_dss,
+def submit_death_of_hoh_registration(start, individual_id, household_id, new_hoh_id, field_worker_id, gender, death_within_dss,
                                      death_village, have_death_certificate, visit_id, cause_of_death, date_of_death,
                                      place_of_death, place_of_death_other, end, aggregate_url):
+    #TODO: update form fields to lastest
     form_dict = {"id": "DEATHTOHOH",
-                 "fields": [["start", start], ["individualId", individual_id], ["new_hoh_id", new_hoh_id],
-                            ["fieldWorkerId", field_worker_id],
+                 "fields": [["start", start], ["end", end],
+                            ["openhds", [["visitId", visit_id], ["fieldWorkerId", field_worker_id],
+                                         ["householdId", household_id], ["individualId", individual_id],
+                                         ["firstName", "first"], ["lastName", "last"], ["new_hoh_id", new_hoh_id]]],
                             ["gender", gender], ["deathWithinDSS", death_within_dss], ["deathVillage", death_village],
-                            ["haveDeathCertificate", have_death_certificate], ["visitId", visit_id],
+                            ["haveDeathCertificate", have_death_certificate],
                             ["causeOfDeath", cause_of_death], ["dateOfDeath", date_of_death],
                             ["placeOfDeath", place_of_death], ["placeOfDeathOther", place_of_death_other],
-                            ["end", end]]}
+                            ]}
     return submit_from_dict(form_dict, aggregate_url)
 
 
