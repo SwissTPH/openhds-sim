@@ -108,10 +108,12 @@
                         {
                             "fields": [
                                 ["start", "2013-08-14T07:43:29.000+03"],
-                                ["visitId", "GND000001001"],
-                                ["fieldWorkerId", "data"],
-                                ["locationId", "GND000001"],
-                                ["roundNumber", "1"],
+								["openhds", [
+											["visitId", "GND000001001"],
+											["fieldWorkerId", "data"],
+											["locationId", "GND000001"],
+											["roundNumber", "1"]
+											]],
                                 ["visitDate", "2013-08-14"],
                                 ["intervieweeId", "GND000001001"],
                                 ["correctInterviewee", "1"],
@@ -125,9 +127,11 @@
 
                             "fields": [
                                 ["start", "2013-08-14T09:21:36.000+03"],
-                                ["individualId", "GND000001001"],
-                                ["fieldWorkerId", "data"],
-                                ["visitId", "GND000001001"],
+								["openhds", [
+											["individualId", "GND000001001"],
+											["fieldWorkerId", "data"],
+											["visitId", "GND000001001"]
+											]],
                                 ["dateOfMigration", "2013-08-02"],
                                 ["nameOfDestination", "Elsewhere in Switzerland"],
                                 ["reasonForOutMigration", "MARITAL_CHANGE"],
@@ -152,10 +156,12 @@
                         {
                             "fields": [
                                 ["start", "2013-10-14T07:43:29.000+03"],
-                                ["visitId", "GND000001002"],
-                                ["fieldWorkerId", "data"],
-                                ["locationId", "GND000001"],
-                                ["roundNumber", "2"],
+								["openhds", [
+											["visitId", "GND000001002"],
+											["fieldWorkerId", "data"],
+											["locationId", "GND000001"],
+											["roundNumber", "2"]
+											]],
                                 ["visitDate", "2013-10-14"],
                                 ["intervieweeId", "GND000001001"],
                                 ["correctInterviewee", "1"],
@@ -169,10 +175,12 @@
                             "fields": [
                                 ["start", "2013-10-14T10:17:48.000+03"],
                                 ["end", "2013-10-14T10:43:04.000+03"],
-                                ["migrationType", "INTERNAL_INMIGRATION"],
-                                ["locationId", "GND000001"],
-                                ["visitId", "GND000001002"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["migrationType", "INTERNAL_INMIGRATION"],
+											["locationId", "GND000001"],
+											["visitId", "GND000001002"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["individualInfo", [
                                     ["individualId", "GND000001001"]
                                 ]],
@@ -186,9 +194,11 @@
                         {
                             "fields": [
                                 ["start", "2013-10-14T07:39:25.000+03"],
-                                ["individualId", "GND000001001"],
-                                ["householdId", "GND00000100"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["individualId", "GND000001001"],
+											["householdId", "GND00000100"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["relationshipToGroupHead", "1"],
                                 ["startDate", "2013-09-30"],
                                 ["end", "2013-10-14T08:27:56.000+03"]
@@ -211,10 +221,12 @@
                         {
                             "fields": [
                                 ["start", "2014-10-14T07:43:29.000+03"],
-                                ["visitId", "GND000001003"],
-                                ["fieldWorkerId", "data"],
-                                ["locationId", "GND000001"],
-                                ["roundNumber", "3"],
+								["openhds", [
+											["visitId", "GND000001003"],
+											["fieldWorkerId", "data"],
+											["locationId", "GND000001"],
+											["roundNumber", "3"]
+											]],
                                 ["visitDate", "2014-10-14"],
                                 ["intervieweeId", "GND000001001"],
                                 ["correctInterviewee", "1"],
@@ -227,13 +239,15 @@
                         {
                             "fields": [
                                 ["start", "2014-10-14T10:42:43.000+03"],
-                                ["individualId", "GND000001001"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["individualId", "GND000001001"],
+											["fieldWorkerId", "data"],
+											["visitId", "GND000001003"]
+											]],
                                 ["gender", "F"],
                                 ["deathWithinDSS", "1"],
                                 ["deathVillage", "VILLAGE"],
                                 ["haveDeathCertificate", "1"],
-                                ["visitId", "GND000001003"],
                                 ["causeOfDeath", "UNKNOWN"],
                                 ["dateOfDeath", "2014-09-10"],
                                 ["placeOfDeath", "OTHER"],

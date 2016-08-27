@@ -108,9 +108,11 @@
                         {
                             "fields": [
                                 ["start", "2013-03-29T11:29:24.000+03"],
-                                ["hierarchyId", "GND"],
-                                ["fieldWorkerId", "data"],
-                                ["locationId", "GND000001"],
+								["openhds", [
+											["hierarchyId", "GND"],
+											["fieldWorkerId", "data"],
+											["locationId", "GND000001"]
+											]],
                                 ["locationName", "Alain"],
                                 ["tenCellLeader", "Unknown"],
                                 ["locationType", "RUR"],
@@ -124,10 +126,12 @@
                             "fields": [
                                 ["start", "2013-03-29T10:37:57.000+03"],
                                 ["end", "2013-03-29T11:07:57.000+03"],
-                                ["migrationType", "BASELINE"],
-                                ["locationId", "GND000001"],
-                                ["visitId", "GND000001000"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["migrationType", "BASELINE"],
+											["locationId", "GND000001"],
+											["visitId", "GND000001000"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["individualInfo", [
                                     ["individualId", "GND000001001"],
                                     ["motherId", "UNK"],
@@ -151,9 +155,11 @@
                         {
                             "fields": [
                                 ["start", "2013-03-29T11:05:37.000+03"],
-                                ["householdId", "GND00000100"],
-                                ["individualId", "GND000001001"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["householdId", "GND00000100"],
+											["individualId", "GND000001001"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["groupName", "Kaufmann"],
                                 ["socialGroupType", "FAM"],
                                 ["end", "2013-03-29T11:30:56.000+03"]
@@ -164,9 +170,11 @@
                         {
                             "fields": [
                                 ["start", "2013-03-29T07:39:25.000+03"],
-                                ["individualId", "GND000001001"],
-                                ["householdId", "GND00000100"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["individualId", "GND000001001"],
+											["householdId", "GND00000100"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["relationshipToGroupHead", "1"],
                                 ["startDate", "2013-03-29"],
                                 ["end", "2013-03-29T08:27:56.000+03"]
@@ -177,10 +185,12 @@
                             "fields": [
                                 ["start", "2013-03-29T11:37:57.000+03"],
                                 ["end", "2013-03-29T11:07:57.000+03"],
-                                ["migrationType", "BASELINE"],
-                                ["locationId", "GND000001"],
-                                ["visitId", "GND000001000"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["migrationType", "BASELINE"],
+											["locationId", "GND000001"],
+											["visitId", "GND000001000"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["individualInfo", [
                                     ["individualId", "GND000001002"],
                                     ["motherId", "UNK"],
@@ -203,9 +213,11 @@
                         {
                             "fields": [
                                 ["start", "2013-03-29T08:39:25.000+03"],
-                                ["individualId", "GND000001002"],
-                                ["householdId", "GND00000100"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["individualId", "GND000001002"],
+											["householdId", "GND00000100"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["relationshipToGroupHead", "2"],
                                 ["startDate", "2013-03-29"],
                                 ["end", "2013-03-29T09:27:56.000+03"]
@@ -215,9 +227,11 @@
                         {
                             "fields": [
                                 ["start", "2013-03-29T08:39:25.000+03"],
-                                ["individualA", "GND000001001"],
-                                ["individualB", "GND000001002"],
-                                ["fieldWorkerId", "data"],
+								["openhds", [
+											["individualA", "GND000001001"],
+											["individualB", "GND000001002"],
+											["fieldWorkerId", "data"]
+											]],
                                 ["relationshipType", "2"],
                                 ["startDate", "2013-03-29"],
                                 ["end", "2013-03-29T09:27:56.000+03"]
