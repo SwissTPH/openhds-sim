@@ -72,7 +72,7 @@ def submit_baseline_individual(start, end, location_id, visit_id, fieldworker_id
                             ["individualInfo", [["individualId", individual_id], ["motherId", mother_id],
                                                 ["fatherId", father_id], ["firstName", first_name],
                                                 ["middleName", middle_name], ["lastName", last_name],
-                                                ["gender", gender], ["dateOfBirth", date_of_birth],
+                                                ["gender", gender], ["religion", "unk"], ["dateOfBirth", date_of_birth],
                                                 ["partialDate", partial_date]]],
                             ["dateOfMigration", date_of_visit], ["warning", ""], ["visitDate", date_of_visit],
                             ["majo4mo", "yes"], ["spelasni", "yes"]]}
@@ -113,9 +113,9 @@ def submit_death_registration(start, individual_id, first_name, last_name, field
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_death_of_hoh_registration(start, individual_id, household_id, new_hoh_id, field_worker_id, gender, death_within_dss,
-                                     death_village, have_death_certificate, visit_id, cause_of_death, date_of_death,
-                                     place_of_death, place_of_death_other, end, aggregate_url):
+def submit_death_of_hoh_registration(start, end, individual_id, household_id, new_hoh_id, field_worker_id, gender,
+                                     death_within_dss, death_village, have_death_certificate, visit_id, cause_of_death,
+                                     date_of_death, place_of_death, place_of_death_other, aggregate_url):
     #TODO: update form fields to lastest
     form_dict = {"id": "DEATHTOHOH",
                  "fields": [["start", start], ["end", end],
@@ -152,9 +152,9 @@ def submit_membership(start, individual_id, household_id, fieldworker_id, relati
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_out_migration_registration(start, individual_id, fieldworker_id, visit_id, first_name, last_name,
+def submit_out_migration_registration(start, end, individual_id, fieldworker_id, visit_id, first_name, last_name,
                                       date_of_migration, name_of_destination, reason_for_out_migration, marital_change,
-                                      end, aggregate_url):
+                                      aggregate_url):
     form_dict = {"id": "out_migration_registration",
                  "fields": [["start", start], ["end", end],
                             ["openhds", [["individualId", individual_id], ["fieldWorkerId", fieldworker_id],
@@ -164,26 +164,18 @@ def submit_out_migration_registration(start, individual_id, fieldworker_id, visi
     return submit_from_dict(form_dict, aggregate_url)
 
 
-def submit_pregnancy_observation(start, estimated_age_of_preg, preg_notes, age_of_preg_from_notes,
-                                 last_period_from_notes, has_anc_clinic_visit, pregnancy_number, have_mosquito_net,
-                                 slept_under_mosquito_net, treated_net, months_or_years, month_since_last_net_treatment,
-                                 source_of_net, relationship_of_respondent_to_expectant, individual_id, fieldworker_id,
-                                 visit_id, exptected_delivery_date, recorded_date, end, aggregate_url):
+def submit_pregnancy_observation(start, end, estimated_age_of_preg, individual_id, fieldworker_id, visit_id,
+                                 exptected_delivery_date, recorded_date,  aggregate_url):
     form_dict = {"id": "pregnancy_observation",
                  "fields": [["start", start], ["end", end],
                             ["openhds", [["fieldWorkerId", fieldworker_id], ["visitId", visit_id],
                                          ["individualId", individual_id], ["recordedDate", recorded_date]]],
-                            ["estimatedAgeOfPreg", estimated_age_of_preg], ["pregNotes", preg_notes],
-                            ["ageOfPregFromPregNotes", age_of_preg_from_notes],
-                            ["lastPeriodFromPregNotes", last_period_from_notes],
-                            ["hasANCClinicVisit", has_anc_clinic_visit],
-                            ["pregnancyNumber", pregnancy_number], ["haveMosquitoNet", have_mosquito_net],
-                            ["sleptUnderMosquitoNet", slept_under_mosquito_net], ["treatedNet", treated_net],
-                            ["monthsOrYears", months_or_years],
-                            ["monthsSinceLastNetTreatment", month_since_last_net_treatment],
-                            ["sourceOfNet", source_of_net],
-                            ["relationshipOfRespondentToExpectantMother", relationship_of_respondent_to_expectant],
-                            ["expectedDeliveryDate", exptected_delivery_date]]}
+                            ["estimatedAgeOfPreg", estimated_age_of_preg], ["pregNotes", "1"],
+                            ["ageOfPregFromPregNotes", estimated_age_of_preg],
+                            ["anteNatalClinic", "YES"], ["lastClinicVisitDate", recorded_date],
+                            ["healthfacility", "1"], ["medicineforpregnancy", "NO"],
+                            ["ttinjection", "YES"], ["othermedicine", "othermedicine"],
+                            ["pregnancyNumber", "1"], ["expectedDeliveryDate", exptected_delivery_date]]}
     return submit_from_dict(form_dict, aggregate_url)
 
 

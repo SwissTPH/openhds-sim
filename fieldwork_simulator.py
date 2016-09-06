@@ -235,10 +235,10 @@ def create_fws(fieldworker):
     #first add a default fieldworker named Data Data, username data, for use in a the standard tablet emulator
     cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
                    "('{uu_id}','data', 'Data', 'Data', false,"
-                   "'$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
+                   " '$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
     cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
                    "('{uu_id}','data2', 'Data2', 'Data2', false,"
-                   "'$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
+                   " '$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')".format(uu_id=util.create_uuid()))
     number = fieldworker['number']
     for i in range(1, number + 1):
         first_name = create_first_name(sample_gender())
@@ -246,7 +246,8 @@ def create_fws(fieldworker):
         #TODO: i is not what should be used according to the naming convention
         ext_id = 'FW' + first_name[0] + last_name[0] + str(i)
         cursor.execute("INSERT INTO fieldworker (uuid, extid, firstname, lastname, deleted, passwordHash) VALUES "
-                       "('{uu_id}','{ext_id}', '{first_name}', '{last_name}', false, '$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')"
+                       "('{uu_id}','{ext_id}', '{first_name}', '{last_name}', false,"
+                       " '$2a$08$83Vl7c/z85s9vdmWLcQYOuflMxgVwdNnMQmDA77L5FvX7ao65vt0W')"
                        .format(uu_id=util.create_uuid(), ext_id=ext_id, first_name=first_name, last_name=last_name))
         hdss['field_workers'].append({'ext_id': ext_id, 'center': sample_coordinates()})
     cursor.close()
@@ -333,7 +334,7 @@ def create_social_group(social_group_size, round_number, start_date, end_date, i
                 submission.submit_baseline_individual(start_time, end_time, location_id, visit_id,
                                                       field_worker['ext_id'], ind_id, 'UNK', 'UNK', first_name,
                                                       middle_name, last_name, gender,
-                                                      str(create_date(age, date_of_visit)),'1', str(date_of_visit),
+                                                      str(create_date(age, date_of_visit)), '1', str(date_of_visit),
                                                       aggregate_url)
 
         else:
@@ -395,18 +396,18 @@ def visit_social_group(social_group, round_number, start_date, end_date):
             individual['status'] = 'dead'
             #TODO: dummy condition
             if "isheadofhousehold" == "True":
-                submission.submit_death_of_hoh_registration(start_time, individual['ind_id'], "TODO_NEW_HOH",
+                submission.submit_death_of_hoh_registration(start_time, end_time, individual['ind_id'],
+                                                            social_group['sg_id'], "TODO_NEW_HOH",
                                                             field_worker['ext_id'], individual['gender'], '1',
                                                             'VILLAGE', '1', visit_id, 'CAUSE_OF_DEATH',
-                                                            str(date_of_visit), 'OTHER', 'OTHERPLACE', end_time,
-                                                            aggregate_url)
+                                                            str(date_of_visit), 'OTHER', 'OTHERPLACE', aggregate_url)
         #TODO: for now define outmigration rate as per visit rate
         if individual['status'] == 'present' and random.random() < outmigration_rate:
             start_time, end_time = create_start_end_time(date_of_visit)
-            submission.submit_out_migration_registration(start_time, individual['ind_id'], field_worker['ext_id'],
-                                                         visit_id, 'notknown', 'notknown', str(date_of_visit),
-                                                         'DESTINATION', 'MARITAL_CHANGE',
-                                                         'REC', end_time, aggregate_url)
+            submission.submit_out_migration_registration(start_time, end_time, individual['ind_id'],
+                                                         field_worker['ext_id'], visit_id, 'notknown', 'notknown',
+                                                         str(date_of_visit), 'DESTINATION', 'MARITAL_CHANGE',
+                                                         'REC', aggregate_url)
             print(individual)
             individual['status'] = 'outside_hdss'
         #half of the external inmigration events happen into social groups
@@ -435,6 +436,7 @@ def visit_social_group(social_group, round_number, start_date, end_date):
 
 def simulate_update(round):
     """Simulate an update round"""
+    global individuals_per_social_group
     newly_inmigrated = []
     for social_group in hdss['social_groups']:
         if not 'no_update' in social_group:
